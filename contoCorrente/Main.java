@@ -4,10 +4,11 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		//Inizializzo tutte le variabili
-		int saldoIniziale = 100000;
-		var postaPay = new ContoPostale(saldoIniziale);
+		int saldoIniziale = 1000;
+		//var postaPay = new ContoCorrenteNTS(saldoIniziale); //Soluzione non thread safe
+		var postaPay = new ContoCorrenteAtomico(saldoIniziale); //Soluzione sincrona con istruzioni atomiche
 		int numCorrentisti = 200;
-		int numOperazioni = 5000;
+		int numOperazioni = 10;
 		int importo = 100;
 		//Chiamata ad una funzione che simula i correntisti e le operazioni con thread
 		testCorrentisti(postaPay, numCorrentisti, numOperazioni, importo);

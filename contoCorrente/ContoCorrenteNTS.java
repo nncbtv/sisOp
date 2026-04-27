@@ -1,17 +1,17 @@
 package sisOp.contoCorrente;
 
-public class ContoPostale extends ContoCorrente{
+//QUESTA IMPLEMENTAZIONE NON HA MECCANISMI DI SINCRONISMO TRA I THREAD
+public class ContoCorrenteNTS extends ContoCorrente{
 
-	public ContoPostale(int importo) { //Costruttore
+	public ContoCorrenteNTS(int importo) { //Costruttore
 		super(importo); //Rimando alla classe concreta
-	}//ContoPostale
+	}//ContoCorrenteNTS
 	
 	@Override
 	public void deposita(int importo) {//Metodo di deposito
 		if (importo<0) throw new RuntimeException("Impossibile depositare una somma negativa");
 		else {
 			Saldo = Saldo+importo; //Aggiorno la varibile della classe astratta
-			System.out.print("Hai depositato");
 		}
 	}//deposita
 	
@@ -21,8 +21,7 @@ public class ContoPostale extends ContoCorrente{
 		if (importo<0) throw new RuntimeException("Impossibile prelevare una somma negativa");
 		else {
 			Saldo = Saldo-importo;
-			System.out.println("Hai prelevato");
 		}
 	}//preleva
 	
-}//ContoPostale
+}//ContoCorrenteNTS
