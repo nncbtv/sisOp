@@ -37,4 +37,4 @@ public class Main {
 		}
 	}//testCorrentisti
 
-}//Main
+}//SingletonNTS

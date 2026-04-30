@@ -55,4 +55,4 @@ public class Main {
 			threadWorkerColonna[i].join();
 		}
 	}//testWorker
-}//Main
+}//SingletonNTS
