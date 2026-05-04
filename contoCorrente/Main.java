@@ -6,14 +6,16 @@ public class Main {
 		//Inizializzo tutte le variabili
 		int saldoIniziale = 1000;
 		//var postaPay = new ContoCorrenteNTS(saldoIniziale); //Soluzione non thread safe
-		var postaPay = new ContoCorrenteAtomico(saldoIniziale); //Soluzione sincrona con istruzioni atomiche
+		//var postaPay = new ContoCorrenteAtomico(saldoIniziale); //Soluzione sincrona con istruzioni atomiche
+		var postaPay = new ContoCorrenteSemaforo(saldoIniziale); //Soluzione sincrona con i semafori
 		int numCorrentisti = 200;
 		int numOperazioni = 10;
 		int importo = 100;
+		System.out.println("Saldo inziale: "+saldoIniziale);
 		//Chiamata ad una funzione che simula i correntisti e le operazioni con thread
 		testCorrentisti(postaPay, numCorrentisti, numOperazioni, importo);
 		//Vado a controllare se è tutto correto
-		if (postaPay.getSaldo() == saldoIniziale ) System.out.println("Tutte le operazioni sono state svolte in modo corretto!");
+		if (postaPay.getSaldo() == saldoIniziale ) System.out.println("Saldo finale: "+postaPay.getSaldo()+"\nTutte le operazioni sono state svolte in modo corretto!");
 		else System.out.println("Errore nelle operazioni!!");
 		
 	}//main

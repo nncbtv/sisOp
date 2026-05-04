@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 //SINCRONISMO CON ISTRUZIONI ATOMICHE
 public class ContoCorrenteAtomico extends ContoCorrente{
 	
-	private AtomicInteger saldoAtomico; //Creo una varibile atomica che andranno a modificare i Thread
+	private AtomicInteger saldoAtomico; //Creo una varibile atomica che andranno a modificare i Thread così da non toccare l'originale
 	
 	/*
 	 *IN QUESTO CASO LA VARIBILE ATOMICA VIENE MODIFICATA IN MODO UNIVOCO DA OGNI THREAD POICHÉ È DEFINITA IN MODO ATOMICO. 
@@ -32,6 +32,11 @@ public class ContoCorrenteAtomico extends ContoCorrente{
 			saldoAtomico.addAndGet(importo); //Atomicamente prendo il valore e aggiungo l'importo da prelevare
 		}
 	}//deposita
+
+	@Override
+	public int getSaldo() {
+		return saldoAtomico.get();
+	}//Ritorno il saldo atomico senza toccare le variabili condivise ma lavorando sulla copia atomica
 	
 	
 }//ContoCorrenteAtomico
