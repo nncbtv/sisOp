@@ -1,0 +1,37 @@
+---APPUNTI TEORICI
+	1)Deadlock: Quando una processo/thread aspetta una risorsa che sta detenendo un altro processo/thread che a sua volta chiede la risorsa del primo e si crea un loop infinito di attesa.
+	2)Starvation: Quando un processo/thread non viene mai eseguito perché la sua priorità è troppo bassa e resta in attesa per sempre. Addormentarsi per un tot di tempo con un lock o semaforo crea starvation finché non lo rilascio.
+
+PREEMPTIVE E NON
+Preemptive significa che interrompe i processi e prendere il controllo, non il contrario.
+Sinonimi sono prelazione e non.
+
+---APPUNTI ESERCIZI
+1)ESERCITAZIONI DI SCHEDULING 
+
+Nella tabella quando un algoritmo di scheduling è non preemptive l'ultima riga e la prima si equivalgono perché l'ultima indica il tempo speso in ready queue prima di ricevere la prima volta la cpu mentre la prima riga indica la somma dei tempi di attesa ad ogni assegnazione della CPU, siccome negli algoritmi non preemptive il processo non viene interrotto le due righe sono uguali
+
+-ROUND ROBIN
+Nel round robin la coda è gestita in fifo, se il processo ha esaurito il quanto ma non è termianto va in fondo alla coda, se il processo termina prima del quanto estrai dalla coda un processo e avvii un altro quanto. I PROCESSI NON SI INTERROMPONO NEL MEZZO DEL QUANTO
+
+2)PROGRAMMAZIONE CONCORRENTE
+
+-Thread stato
+Quando siamo in sleep lo stato del thread è not runnable
+
+-Thread.join
+Chiedi al thread corrente di aspettare il thread su cui hai chiamato join()
+
+-Thread Daemon
+Un thread a bassa priorità che serve i thread principali, esso termina quando sono rimasti solo i thread simili a lui e i principali finiscono, ad esempio il garbage collector di java
+
+-BUSY WAITING
+Quando metti un thread ad aspettare in un ciclo while senza fargli fare nulla, questo consuma solo colpi di clock
+
+-DIFFERENZA TRA THREAD E RUNNABLE
+Sostanzialmente non esiste nessuna differenza ma in base alla convenienza decidiamo quale usare, estendere la classe Thread non ci permette poi di fare inheritance di qualche altra classe, mentre implementando l'interfaccia Runnable possiamo estendere da altre classi. Quando implementi Runnable crei un oggetto di quel tipo che poi va passato ad un istanza della classe Thread per poterlo runnare. Ad esempio la classe SalutiR implementa l'interfaccia runnable, quindi per poterlo avviare come thread devo fare nel mani: SalutiR x = new SalutiR() e poi dopo averlo creato lo passo alla classe thread facendo Thread y = new Thread(x).
+
+-MECCANISMI DI SINCRONISMO DEI THREAD VISTI
+	1)OPERAZIONI ATOMICHE: risolve il concetto di interleaving, quando le istruzioni a livello macchina dei thread si mischiano tra di loro e accedono a dati condivisi in base a come vengono schedulati. Modificare questo tipo di dati è sicuro perché a basso livello (linguaggio macchina) non si verifica interleaving.
+	2)SEMAFORI: Sincronizzano e garantiscono l'accesso in mutua esclusione alla sezione critica tramite un contatore che inizializziamo noi, i thread che non riescono ad acquisire il semaforo restano in attesa finché un altro thread non lo rilascia.
+	3)MONITOR: Essi creano una classe con dentro variabile e metodi che consentono l'uso delle stesse in modo atomico tramite dei lock, le condition invece sono delle condizioni che servono ad un thread prima di finire in modo atomico i suoi comandi. Le condition possono essere gestite in 2 modi, hoare e Hansen, hoare è in pratica non preemptive, il segnalato aspetta che il segnalante abbia finito prima di andare di nuovo in sezione critica mentre Hansen è preemptive. in java non si possono creare direttamnte classi monitor ma possiamo usare i lock e le condition per farla diventare tale. L'interfaccia da usare è la lock implementata con la classe reintranceLock. Quindi Lock l = new ReentranceLock ed adesso abbiamo il lock l a cui possiamo collegare una condition tramite l'inizializzazione di un oggetto Condition c = l.newCondition() ora su c possiamo invocare c.await() per fare aspettare i thread e c.signal() per farli riprendere. Per usare i lock in java dobbiamo per forza inserire il blocco del codice da eseguire in un try-finally dove nel finally faremo l'unlock, il lock va fatto prima del try. Questo serve per evitare deadlock. Ad ogni lock è associata una coda, anche qui se imposto il bit di fairness a true ottengo una politica di scheduling, quello più anziano viene servito prima. Quando uso una condition e faccio c.await() devo per forza metterlo in un ciclo while. Le condition sono collegate ad un determinato lock, infatti chiamo condition su di esso per crearle. Per usare i metodi di una condition devo aver acquisito prima il suo lock, quando faccio await su una condition rilascio il lucchetto, cambio stato e mi metto in coda su di essa finchè qualcuno non mi sveglia. Se faccio signal su una condition non so quale dei thread in attesa sveglio, non c'è una politica. Quando invoco signalAll tutti i thread che erano sospesi su quella condizione si svegliano e devono cercare di acquisire il lock in modo concorrente. Mettiamo la await su una condition in un ciclo while perché il thread potrebbe essere svegliato dal sistema operativo oppure da una signalAll ma non è ancora il suo turno, controllo con variabile boolean nel while, oppure ancora perché quello che ci serviva è cambiato, piccolo contro della politica di Hansen non preemptive.
