@@ -1,14 +1,14 @@
 package sisOp.Esercitazione_5_MemoriaCondivisa;
 
 public abstract class MemoriaCondivisa {
-	
+	//Questa classe garantisce l'interfaccia di accesso alla memoria condivisa da parte dei thread
 	public abstract void inizioScrittura() throws InterruptedException;
 	public abstract void fineScrittura() throws InterruptedException;
 	
 	public abstract void inizioLettura() throws InterruptedException;
 	public abstract void fineLettura() throws InterruptedException;
 	
-
+	//Avvio threads
 	protected void test (int nLettori, int nScrittori) {
 		Lettore l[] = new Lettore[nLettori];
 		for ( int i = 0; i<nLettori; i++) {

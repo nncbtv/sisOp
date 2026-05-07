@@ -10,7 +10,7 @@ public class BufferSemaforo extends Buffer {
 
 	public BufferSemaforo(int dimensione) {
 		super(dimensione);
-		ciSonoPostiVuoti = new Semaphore(dimensione); //L'array è vuoto, i produttori hanno a disposizione tutte le celle cu cui scrivere
+		ciSonoPostiVuoti = new Semaphore(dimensione); //L'array è vuoto, i produttori hanno a disposizione tutte le celle su cui scrivere
 	}//Costruttore
 
 	@Override
@@ -21,7 +21,7 @@ public class BufferSemaforo extends Buffer {
 		System.out.println("Sto scrivendo: "+i);
 		in = (in+1)%buffer.length; //Resetto l'indice con l'operazione di modulo, (n+1) perchè devo andare alla prosiima cella
 		mutex.release(); //Lascio il mutex per far scrivere ad un altro thread
-		ciSonoElementi.release(); //Aggiungo un permesso per la scrittura
+		ciSonoElementi.release(); //Aggiungo un permesso per la lettura
 		
 	}
 

@@ -15,10 +15,10 @@ private MemoriaCondivisa memoria;
 	public void run() {
 		try {
 			while(true) {
-				memoria.inizioLettura();
-				leggi();
-				memoria.fineLettura();
-				faiAltro();
+				memoria.inizioLettura(); //Notifico la memoria concreta che voglio leggere
+				leggi(); //Metodo fittizio per simulare il tempo di lettura
+				memoria.fineLettura(); //Notifico che ho finito
+				faiAltro(); //Faccio altro prima di terminare, metodo fittizio
 			}
 		}catch(InterruptedException e) {
 			System.out.println("Errore nello scrittore!");
