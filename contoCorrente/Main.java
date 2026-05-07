@@ -1,5 +1,7 @@
 package sisOp.contoCorrente;
 
+import sisOp.Esercitazione_6_ContoCorrenteLock.ContoCorrenteLock;
+
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
@@ -7,7 +9,8 @@ public class Main {
 		int saldoIniziale = 1000;
 		//var postaPay = new ContoCorrenteNTS(saldoIniziale); //Soluzione non thread safe
 		//var postaPay = new ContoCorrenteAtomico(saldoIniziale); //Soluzione sincrona con istruzioni atomiche
-		var postaPay = new ContoCorrenteSemaforo(saldoIniziale); //Soluzione sincrona con i semafori
+		//var postaPay = new ContoCorrenteSemaforo(saldoIniziale); //Soluzione sincrona con i semafori
+		var postaPay = new ContoCorrenteLock(saldoIniziale);
 		int numCorrentisti = 200;
 		int numOperazioni = 10;
 		int importo = 100;
