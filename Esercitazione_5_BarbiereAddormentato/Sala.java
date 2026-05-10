@@ -15,8 +15,8 @@ public abstract class Sala {
 	//Test dei threads
 	public void test ( int nClienti ) throws InterruptedException {
 		Barbiere b = new Barbiere(this);
-		b.setDaemon(true); //Questo thread vive 
-		b.start();
+		b.setDaemon(true); //Questo thread vive per servire gli altri
+		b.start(); //Lo avviamo subito, quando gli altri thread terminano anche questo muore
 		Cliente [] c = new Cliente[nClienti];
 		for ( int i = 0; i<nClienti; i++ ) {
 			c[i] = new Cliente(this, i);

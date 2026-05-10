@@ -16,6 +16,9 @@ Nel round robin la coda è gestita in fifo, se il processo ha esaurito il quanto
 
 2)PROGRAMMAZIONE CONCORRENTE
 
+-Return nel try-finally
+Viene sempre eseguito il blocco finally quindi non ci si addormenta con il lock in mano
+
 -Thread stato
 Quando siamo in sleep lo stato del thread è not runnable
 

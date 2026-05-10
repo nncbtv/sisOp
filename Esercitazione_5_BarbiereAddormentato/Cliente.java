@@ -16,7 +16,7 @@ public class Cliente extends Thread {
 			System.out.println("Il cliente: "+id+" vuole tagliarsi i capelli...");
 			boolean accettato = sala.attendiTaglio(); //Questo metodo mi fa mettere in coda ed entrare nella sala
 			if (accettato) {
-				System.out.println("Il cliente: "+id+" è in coda");
+				System.out.println("Il cliente: "+id+" è sulla poltrona");
 			}else {
 				System.out.println("Il cliente: "+id+" ha preso un appuntamento per domani");
 			}
@@ -28,5 +28,7 @@ public class Cliente extends Thread {
 	public String toString() {
 		return "Cliente: "+id;
 	}
+	
+	public int getID() {return id;}
 
 }//Cliente
