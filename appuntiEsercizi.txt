@@ -11,10 +11,16 @@ Sinonimi sono prelazione e non.
 
 Nella tabella quando un algoritmo di scheduling è non preemptive l'ultima riga e la prima si equivalgono perché l'ultima indica il tempo speso in ready queue prima di ricevere la prima volta la cpu mentre la prima riga indica la somma dei tempi di attesa ad ogni assegnazione della CPU, siccome negli algoritmi non preemptive il processo non viene interrotto le due righe sono uguali
 
+2)ESERCIZI DI PAGINAZIONE
+Con fifo guarda sempre quello più veccchio nello schema dei frame, con LRU guarda invece quella pagina che è stata usata meno recente nell'ordine di arrivo. Con l'algoritmo ottimale, guardi invece il futuro di quelli che stanno per arrivare dalle pagine, sostituisci il più lontano andando a dx ma quando non c'è niente a dx, non arrivano più pagine usa fifo
+
 -ROUND ROBIN
 Nel round robin la coda è gestita in fifo, se il processo ha esaurito il quanto ma non è termianto va in fondo alla coda, se il processo termina prima del quanto estrai dalla coda un processo e avvii un altro quanto. I PROCESSI NON SI INTERROMPONO NEL MEZZO DEL QUANTO
 
 2)PROGRAMMAZIONE CONCORRENTE
+
+-Tips numero semafori e altro
+Ogni volta che c'è un evento che genera coda serve un semaforo, per ogni acquire devo fare un realease. Stessa cosa per i lock, ogni coda necessita di una condition e spesso ci vuole una booleana da aiuto per fare la await sulla condition. Se devi gestire i thread in fifo con i lock e conditon ti serve una lista mentre con i semafori puopi usare il bit di fairnress.
 
 -Return nel try-finally
 Viene sempre eseguito il blocco finally quindi non ci si addormenta con il lock in mano

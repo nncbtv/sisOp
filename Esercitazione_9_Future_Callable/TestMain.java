@@ -20,7 +20,7 @@ public class TestMain {
 		ExecutorService ex = Executors.newSingleThreadExecutor();
 		//Per vedere il suo risultato uso i future
 		Future<String> ris = ex.submit(new SalutiC()); //Passo un callable
-		String risultato = ris.get();
+		String risultato = ris.get(); //richiamo il risultato
 		System.out.println(ris.isDone()); //Per controllare se il mio Callable è stato eseguito
 		System.out.println(risultato);
 		ex.shutdown();
