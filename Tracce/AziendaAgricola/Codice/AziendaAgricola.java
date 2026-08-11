@@ -2,7 +2,7 @@ package sisOp.Tracce.AziendaAgricola.Codice;
 
 public abstract class AziendaAgricola {
 
-	protected int sacchiDisponibili = 20; //Sacchetti disponibili alla vendita
+	protected int sacchiDisponibili = 200; //Sacchetti disponibili alla vendita
 	protected int costoSacco = 3;
 	protected int saldoFinale = 0;
 	
@@ -23,10 +23,9 @@ public abstract class AziendaAgricola {
 		for ( int i = 0; i<nClienti; i++ ) {
 			clienti[i].join();
 		}
+		magazziniere.interrupt(); //Interrompo il magazziniere per chiudere, interruzione gestita lato classe, gestirla qui non è possibile
+		magazziniere.join(); //Aspetto che termini effettivamente il thread
 		mostraIncasso();
-		System.out.println("Tutti i clienti sono stati serviti");
-		operaioMagazziniere.chiusura();
-		magazziniere.join();
 	}//test
 	
 	void mostraIncasso() {

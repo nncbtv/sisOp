@@ -23,7 +23,7 @@ public class AziendaAgricolaLock extends AziendaAgricola {
 	
 	public AziendaAgricolaLock() {
 		//Inizializzo il magazzino
-		lockMagazzino = new ReentrantLock();
+		lockMagazzino = new ReentrantLock(); 
 		attesaInMagazzino = lockMagazzino.newCondition();
 		attesaMagazziniere = lockMagazzino.newCondition();
 		magazzinoOccupato = false;
@@ -35,6 +35,12 @@ public class AziendaAgricolaLock extends AziendaAgricola {
 		codaClientiCassa = new LinkedList<Thread>();
 		cassaOccupata = false;
 	}//Costruttore
+	
+	/*
+	 * Non imposto il bit di fairness a true nel lock poiché esso mi serve solo per l'assegnazione del lock stesso,
+	 * se un thread si sveglia in modo anomalo passa e salta la coda se non implemento tutta la coda manualmente.
+	 * Quindi il solo bit di fairness a true non basta a garantirmi tutta la logica FIFO
+	 * */
 	
 	@Override
 	void pagaSacchetti(int nSacchetti) throws InterruptedException {
@@ -57,8 +63,13 @@ public class AziendaAgricolaLock extends AziendaAgricola {
 			
 			codaClientiCassa.poll(); //Lascio il posto in coda
 			cassaOccupata = false; //Lascio la cassa libera per andare in magazzino
+			attendiTurnoPagamento.signalAll(); //Sveglio chi stava dormendo sull'attesa della cassa per pagare
 		
 		}finally {
+			/*
+			 * Per essere al cento per cento precisi dovremmo toglierci dalla coda se il nostro thread per qualche motivo fallirebbe
+			 * oltre a rilasciare solo il lock in caso di eccezioni
+			 * */
 			lockCassa.unlock();
 		}
 	}//pagaSacchetti
@@ -74,9 +85,9 @@ public class AziendaAgricolaLock extends AziendaAgricola {
 			}
 			magazzinoOccupato = true; //Occupo il magazzino
 			
-			if ( nSacchetti >= super.sacchiDisponibili ) { //Non lo metto nel while per evitare deadlock
+			if ( nSacchetti > super.sacchiDisponibili ) { //Non lo metto nel while per evitare deadlock
 				sacchiBastano = false; //Informo il magazziniere che non mi bastano i sacchi
-				attesaMagazziniere.signalAll(); //Il magazziniere deve rifornire i sacchetti
+				attesaMagazziniere.signal(); //Il magazziniere deve rifornire i sacchetti
 				System.out.println("Il cliente: "+Thread.currentThread().getName()+" ha informato il magazziniere, mancano "+(nSacchetti-super.sacchiDisponibili)+" sacchetti");
 				while ( !sacchiBastano ) {
 					attesaInMagazzino.await(); //Lascio il comando al magazziniere
@@ -103,7 +114,7 @@ public class AziendaAgricolaLock extends AziendaAgricola {
 			while ( sacchiBastano ) {
 				attesaMagazziniere.await();
 			}
-			super.sacchiDisponibili = 20;
+			super.sacchiDisponibili = 200;
 			TimeUnit.SECONDS.sleep(5);
 			System.out.println("Il Magazziniere: "+Thread.currentThread().getName()+" ha riempito il magazzino");
 			sacchiBastano = true;

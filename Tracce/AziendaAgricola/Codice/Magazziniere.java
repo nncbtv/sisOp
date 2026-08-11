@@ -3,7 +3,6 @@ package sisOp.Tracce.AziendaAgricola.Codice;
 public class Magazziniere implements Runnable {
 	
 	AziendaAgricola azienda;
-	private boolean chiusura = false;
 	
 	public Magazziniere(AziendaAgricola a) {
 		this.azienda = a;
@@ -12,16 +11,12 @@ public class Magazziniere implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while ( !chiusura ) {
+			while ( !Thread.currentThread().isInterrupted() ) {
 				azienda.refillMagazzino();
 			}
-		} catch (Exception e) {
-			System.out.println("Errore nel magazziniere");
+		} catch (InterruptedException e) {
+			System.out.println("Il magazziniere ha finito il turno");
 		}
 	}//run
-
-	public void chiusura(){
-		this.chiusura = true;
-	}
 	
 }//Magazziniere
