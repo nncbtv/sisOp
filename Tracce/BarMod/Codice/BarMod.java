@@ -22,5 +22,6 @@ public abstract class BarMod {
 				System.out.println("Non sono riuscito a servire tutti i clienti :(");
 			}
 		}
+		System.out.println("Tutti i clienti sono stati serviti");
 	}//test
 }//BarMod

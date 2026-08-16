@@ -12,7 +12,7 @@ public class BarModSemaphore extends BarMod {
 	
 	private Semaphore codaCassa; //Uso i semafori per gestire le code dei thread, il semaforo stesso si occupera di garantire mutua esclusione
 	private Semaphore codaBancone;
-	private Random r;
+	private Random r; //Random per generare numeri da usare come attesa 
 	
 	public BarModSemaphore() {
 		codaCassa = new Semaphore(1, true); //Alla cassa si paga uno alla volta e in ordine FIFO

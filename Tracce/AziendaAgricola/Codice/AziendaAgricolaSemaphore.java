@@ -34,7 +34,7 @@ public class AziendaAgricolaSemaphore extends AziendaAgricola{
 	void ritiroSacchetti(int nSacchetti) throws InterruptedException {
 		try {
 			codaMagazzino.acquire();
-			if ( super.sacchiDisponibili<=nSacchetti ) {
+			if ( super.sacchiDisponibili<nSacchetti ) {
 				System.out.println(Thread.currentThread().getName()+" ha svegliato il magazziniere, mancano "+(nSacchetti-super.sacchiDisponibili)+" sacchetti");
 				//Devo chiamare il magazziniere per rifornire prima di ritirare il mio carico
 				svegliaMagazziniere.release(); //Passo un permesso al semaforo
