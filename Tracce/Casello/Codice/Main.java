@@ -4,7 +4,7 @@ public class Main {
 
 	public static void main(String [] args) {
 		int numeroAutomobilisti = 150;
-		CaselloAutostradaleLock casello = new CaselloAutostradaleSemaphore();
+		CaselloAutostradaleSemaphore casello = new CaselloAutostradaleSemaphore();
 		casello.test(numeroAutomobilisti);
 	}//main
 	
