@@ -2,8 +2,6 @@ package sisOp.Tracce.BarMod.Codice;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -18,8 +16,7 @@ public class BarModLock extends BarMod {
 	//Code per ogni sezione
 	private Queue<Thread> codaCassa;
 	private Queue<Thread> codaBancone;
-	
-	private Random r;
+	private int postiBancone = 4; //Mi serve per far passare 4 thread alla volta dalla coda al bancone fino a sedersi
 	
 	public BarModLock() {
 		cassa = new ReentrantLock();
@@ -29,17 +26,19 @@ public class BarModLock extends BarMod {
 		
 		codaCassa = new LinkedList<>();
 		codaBancone = new LinkedList<>();
-		
-		r = new Random();
 	}//costruttore
 
 	@Override
 	public int scegli() {
 		//Controllo a quale fila conviene mettermi in coda
 		if ( codaCassa.size() == 0 ) return 1;
-		if ( codaBancone.size() == 0) return 2;
+		if ( codaBancone.size() == 0 && postiBancone > 0) return 2;
 		if ( codaBancone.size() < codaCassa.size() ) return 2;
 		return 1;
+		/*
+		 * Metodo che fa un piccola stima, ovviemente qui c'é race condition poiche un Thread può aggiungersi in coda mentre controllo,
+		 * non è però un problema, sto simulando una stima di due code ad occhio quindi ci sta
+		 * */
 	}//scegli
 
 	@Override
@@ -56,10 +55,6 @@ public class BarModLock extends BarMod {
 				}
 				//Se riesco a passare la condition e uscire dal ciclo while vado a pagare
 				System.out.println("Il cliente: "+corrente.getName()+" sta pagando");
-				int pagamento = r.nextInt(5,11);
-				TimeUnit.SECONDS.sleep(pagamento); //Simulazione di attesa pagamento
-				codaCassa.remove(corrente); //Esco dalla coda
-				aspettaCassa.signalAll(); //Segnalo il posto libero
 			}catch (Exception e) {
 				System.out.println("Errore nella coda cassa");
 			}finally {
@@ -71,15 +66,14 @@ public class BarModLock extends BarMod {
 				//Preso il lock devo mettermi in coda 
 				Thread corrente = Thread.currentThread();
 				codaBancone.add(corrente); //Mi metto in coda alla cassa
-				while ( !codaBancone.peek().equals(corrente) ) {
+				while ( !codaBancone.peek().equals(corrente) || postiBancone == 0 ) {
 					aspettaBancone.await();
 				}
-				//Se riesco a passare la condition e uscire dal ciclo while vado a pagare
+				//Qui ci saranno 4 thread in ordine fifo
+				postiBancone--; //Tolgo un posto al bancone
+				codaBancone.poll(); //Esco dalla coda e il prossimo può controllare se ci sono posti al bancone
+				//Se riesco a passare la condition e uscire dal ciclo while vado a consumare
 				System.out.println("Il cliente: "+corrente.getName()+" sta consumando");
-				int consumazione = r.nextInt(20,41);
-				TimeUnit.SECONDS.sleep(consumazione); //Simulazione di attesa pagamento
-				codaBancone.remove(corrente); //Esco dalla coda
-				aspettaBancone.signalAll(); //Segnalo il posto libero
 			}catch (Exception e) {
 				System.out.println("Errore nella coda bancone");
 			}finally {
@@ -91,10 +85,22 @@ public class BarModLock extends BarMod {
 	@Override
 	public void finisci(int i) {
 		//Siccome qui devo fare le operazioni inverse per ridurre il codice ripetuto scambio gli indici e richiamo la funzione precedente
-		if ( i == 1 ) { //Significa che ho pagato ed ora devo consumare
-			inizia(2); //Mi sposto al bancone
+		if ( i == 1 ) { //Significa che ho pagato e devo togliermi dalla coda
+			cassa.lock();
+			try {
+				codaCassa.poll(); //Faccio scorrere la coda della cassa
+				aspettaCassa.signalAll(); //Segnalo il posto libero
+			}finally {
+				cassa.unlock();
+			}
 		}else {
-			inizia(1); //Mi sposto alla cassa
+			bancone.lock();
+			try {
+				postiBancone++; //Libero un posto al bancone
+				aspettaBancone.signalAll(); //Segnalo il posto libero
+			}finally {
+				bancone.unlock();
+			}
 		}
 	}//finisci
 
