@@ -7,10 +7,14 @@ public abstract class Funivia {
 	abstract void turistaSali(int tipoTurista);
 	abstract void turistaScendi(int tipoTurista);
 	
+	protected int pedoni = 18;
+	protected int ciclisti = 9;
+	protected int personeValle = pedoni+ciclisti;
+	
 	public void test() {
 		try {
-			Thread [] turistiBici = new Thread[9];
-			Thread [] turistiPiedi = new Thread[18];
+			Thread [] turistiBici = new Thread[ciclisti];
+			Thread [] turistiPiedi = new Thread[pedoni];
 			Pilota tonino = new Pilota ( this );
 			tonino.start();
 			for ( int i = 0; i<9; i++ ) {
@@ -30,9 +34,8 @@ public abstract class Funivia {
 			for ( int i = 0; i<18; i++ ) {
 				turistiPiedi[i].join();
 			}
-			
-			tonino.interrupt();
 			tonino.join();
+			System.out.println("Le persone sono state tutte portate a monte");
 		
 		}catch (Exception e) {
 			System.out.println("Errore funivia");

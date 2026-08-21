@@ -13,7 +13,7 @@ public class Pilota extends Thread{
 	@Override
 	public void run() {
 		try {
-			while( true ) {
+			while( f.personeValle > 0 ) {
 				f.pilotaStart(); //Scendo a valle e faccio salire i passeggeri
 				TimeUnit.SECONDS.sleep(5); //Simulo la risalita
 				f.pilotaEnd();
