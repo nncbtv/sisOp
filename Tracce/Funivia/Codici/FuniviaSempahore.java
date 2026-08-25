@@ -1,19 +1,26 @@
 package sisOp.Tracce.Funivia.Codici;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 public class FuniviaSempahore extends Funivia {
 	
 	private Semaphore salitaPersone;
 	private Semaphore salitaCiclisti;
+	private Semaphore mutex;
+	private Queue<String> nominativi;
 	private Semaphore partenzaFunivia;
 	private Semaphore fineCorsa;
 	private Semaphore ritornoFunivia;
-	private Boolean corsaPedoni = true; //Inizio la prima corsa con i pedoni
+	private boolean corsaPedoni = true; //Inizio la prima corsa con i pedoni
 	
-	public FuniviaSempahore() {
+	public FuniviaSempahore(int pedoni, int ciclisti) {
+		super(pedoni, ciclisti); //Passo sopra per poter inizializzare il tutto
 		salitaPersone = new Semaphore(0, true); //possono salire 6 persone
 		salitaCiclisti = new Semaphore(0, true); //possono salire al massimo 3 ciclisti
+		mutex = new Semaphore(1); //Mi serve per gestire i nominativi dei thread che salgono
+		nominativi = new LinkedList<>(); //Prendo i nomi di chi è salito sulla funivia
 		partenzaFunivia = new Semaphore(0); //Parto appena sono pieni i posti della funivia
 		ritornoFunivia = new Semaphore(0); //Scendo appena sono scesi tutti i thread
 		fineCorsa = new Semaphore(0); //Mi serve per svegliare poi i thread che hanno fatto il giro sulla funivia
@@ -41,7 +48,12 @@ public class FuniviaSempahore extends Funivia {
 	void pilotaEnd() {
 		//Questo metodo fa scendere i passeggeri e imposta il nuovo tipo di corsa
 		try {
-			fineCorsa.release((corsaPedoni)?6:3); //Sveglio i thread sui sedili della funivia
+			mutex.acquire(); //Devo operare sulla coda
+			while (!nominativi.isEmpty()) {
+				System.out.println("Ho portato a monte: "+nominativi.poll()); //Stampo chi ho portato su
+			}
+			mutex.release(); //rialscio per le operrazioni sulla coda
+			fineCorsa.release((corsaPedoni)?6:3); //Sveglio i thread sui sedili della funivia e gli dico che possono scendere
 			ritornoFunivia.acquire((corsaPedoni)?6:3); //Aspetto che i posti sulla funivia siano liberi
 			System.out.print("Sono scesi tutti, ho trasportato: ");
 			
@@ -63,13 +75,19 @@ public class FuniviaSempahore extends Funivia {
 		try {
 			if ( tipoTurista == 0 ) { //Se sono un pedone e la corsa è per me salgo
 				salitaPersone.acquire(); //Questo per forza mi darà 6 thread qui dentro
+				mutex.acquire(); //Prendo la mutua esclusione per aggiungermi alla coda
 				System.out.println("Sono: "+Thread.currentThread().getName()+ ", pedone e sto salendo");
+				nominativi.add(Thread.currentThread().getName()); //Aggiungo il nome alla coda dei nominativi
+				mutex.release(); //Rilascio la mutua esclusione
 				partenzaFunivia.release();
 			}
 			if ( tipoTurista == 1 ) { //Se sono un ciclista e la corsa è per me salgo
 				salitaCiclisti.acquire();
+				mutex.acquire();
 				System.out.println("Sono: "+Thread.currentThread().getName()+ ", ciclista e sto salendo");
-				partenzaFunivia.release(); //Ne rilascio due perché uno lo occopa il tipo e l'altro la bici
+				nominativi.add(Thread.currentThread().getName()); //Aggiungo il nome alla coda dei nominativi
+				mutex.release(); //Rilascio la mutua esclusione
+				partenzaFunivia.release(); //Informo di essere sceso
 			}
 		}catch (Exception e) {
 			System.out.println("Errore salita posto funivia");
@@ -81,8 +99,7 @@ public class FuniviaSempahore extends Funivia {
 		if ( tipoTurista == 0 ) { //Se sono un pedone libero un posto
 			try {
 				fineCorsa.acquire(); //Attede che la corsa finisca prima di andare avanti
-				System.out.println("Sono: "+Thread.currentThread().getName()+ ", pedone e sto scendendo");
-				ritornoFunivia.release();
+				ritornoFunivia.release(); //Informo il pilota di essere sceso
 			}catch (Exception e) {
 				System.out.println("Errrore nella discesa del posto pedone a monte");
 			}
@@ -90,8 +107,7 @@ public class FuniviaSempahore extends Funivia {
 		if ( tipoTurista == 1 ) { //Se sono un ciclista libero due posti
 			try {
 				fineCorsa.acquire(); //Resto seduto finchè non mi da il via per scendere il pilota
-				System.out.println("Sono: "+Thread.currentThread().getName()+ ", ciclista e sto scendendo");
-				ritornoFunivia.release();
+				ritornoFunivia.release(); //Informo il pilota di essere sceso
 			}catch (Exception e) {
 				System.out.println("Errore nella discesa del posto ciclista a monte");
 			}

@@ -7,9 +7,15 @@ public abstract class Funivia {
 	abstract void turistaSali(int tipoTurista);
 	abstract void turistaScendi(int tipoTurista);
 	
-	protected int pedoni = 18;
-	protected int ciclisti = 9;
-	protected int personeValle = pedoni+ciclisti;
+	protected int pedoni;
+	protected int ciclisti;
+	protected int personeValle;
+	
+	public Funivia(int pedoniIn, int ciclistiIn) {
+		this.pedoni = pedoniIn;
+		this.ciclisti = ciclistiIn;
+		this.personeValle = pedoni+ciclisti;
+	}//Funivia
 	
 	public void test() {
 		try {
@@ -17,21 +23,21 @@ public abstract class Funivia {
 			Thread [] turistiPiedi = new Thread[pedoni];
 			Pilota tonino = new Pilota ( this );
 			tonino.start();
-			for ( int i = 0; i<9; i++ ) {
+			for ( int i = 0; i<ciclisti; i++ ) {
 				turistiBici[i] = new Thread( new Turista(1, this) );
 				turistiBici[i].start();
 			}
 			
-			for ( int i = 0; i<18; i++ ) {
+			for ( int i = 0; i<pedoni; i++ ) {
 				turistiPiedi[i] = new Thread ( new Turista(0, this) );
 				turistiPiedi[i].start();
 			}
 			
-			for ( int i = 0; i<9; i++ ) {
+			for ( int i = 0; i<ciclisti; i++ ) {
 				turistiBici[i].join();
 			}
 			
-			for ( int i = 0; i<18; i++ ) {
+			for ( int i = 0; i<pedoni; i++ ) {
 				turistiPiedi[i].join();
 			}
 			tonino.join();
