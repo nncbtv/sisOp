@@ -8,7 +8,6 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CallCenterLC extends CallCenter {
-	//Questa è la prima soluzione che mi è venuta in mente che termina e sembra corretta, spreca però un sacco di spazio, da riprovare con gli id dei thread operatori
 	private Queue<Integer> codaFuoriCentralino = new LinkedList<Integer>(); //Coda di attesa FIFO
 	private ReentrantLock l = new ReentrantLock();
 	private Condition entrataCentralino = l.newCondition();
@@ -129,6 +128,9 @@ public class CallCenterLC extends CallCenter {
 				}
 				//Qui devo controllare se le operazioni fornite sono andate a buon fine
 				if (!problemaRisolto[o.codiceTicket]) {
+					//Riamoro i flag
+					attendiOperatore[o.codiceTicket] = true;
+					attendiCliente[o.codiceTicket] = true;
 					int tempoDialogo = r.nextInt(1,5); //Tempo di discussione
 					l.unlock();
 					TimeUnit.SECONDS.sleep(tempoDialogo); //Dialogo con il thread cliente
