@@ -1,11 +1,14 @@
 package sisOp.Tracce.CallCenter.Codice;
 
+import java.util.concurrent.TimeUnit;
+
 public class Operatore extends Thread {
 
-	private int clientiServiti = 1; //Variabile interna per chiedere poi la pausa
+	private int clientiServiti = 0; //Variabile interna per chiedere poi la pausa
 	private int nOperatore;
 	private CallCenter c;
 	public boolean stop = false;
+	public int codiceTicket = -1;
 	
 	public Operatore(CallCenter vodafone, int nOperatore) {
 		this.c = vodafone;
@@ -20,6 +23,10 @@ public class Operatore extends Thread {
 				if ( stop ) return;
 				clientiServiti +=1; //Incremento il mio contatore dei clienti serviti
 				c.prossimoCliente(); //Passa al prossimo cliente
+				if ( clientiServiti%15 == 0 ) {
+					TimeUnit.SECONDS.sleep(15);
+					System.out.println(Thread.currentThread().getName()+" ritorna dalla pausa caffe");
+				}
 			}while ( c.numeroClienti>0 );
 		}catch (Exception e) {
 			e.printStackTrace();

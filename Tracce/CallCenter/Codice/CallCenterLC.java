@@ -55,31 +55,27 @@ public class CallCenterLC extends CallCenter {
 		l.lock();
 		try {
 			//Entrato in questa sezione il mio operatore deve scegliere chi servire dalla coda
-			int codiceTicket = -1;
-			if ( !codaFuoriCentralino.isEmpty() ) {
-				codiceTicket = codaFuoriCentralino.poll(); //Prendo il primo id in coda, questo ci unisce come worker e cliente
-			}
 			Thread threadCorrente = Thread.currentThread();
 			Operatore o = (Operatore) threadCorrente;
-			if (codiceTicket == -1){
+			if ( !codaFuoriCentralino.isEmpty() ) {
+				o.codiceTicket = codaFuoriCentralino.poll(); //Prendo il primo id in coda, questo ci unisce come worker e cliente
+			}
+			if (o.codiceTicket == -1){
 				System.out.println(o.getNoperatore()+" Non ha trovato clienti da servire");
 				o.stop = true; //Questo operatore non riuscira a prendere altri clienti quindi lo fermo
 				return; //non ci sono più thread da servire
 			}
-			System.out.println("Sono l'operatore "+o.getNoperatore()+" sto servendo il cliente "+codiceTicket);
-			operatoreAssegnato[codiceTicket] = true; //Mi assegno al cliente
+			System.out.println("Sono l'operatore "+o.getNoperatore()+" sto servendo il cliente "+o.codiceTicket);
+			operatoreAssegnato[o.codiceTicket] = true; //Mi assegno al cliente
 			entrataCentralino.signalAll(); //Faccio avanzare il cliente per farlo sedere nella mia scrivania
-			System.out.println("Sono l'operatore "+o.getNoperatore()+" sto parlando con il cliente "+codiceTicket);
+			System.out.println("Sono l'operatore "+o.getNoperatore()+" sto parlando con il cliente "+o.codiceTicket);
 			int tempoDialogo = r.nextInt(1,11); //Tempo di discussione
 			l.unlock();
 			TimeUnit.SECONDS.sleep(tempoDialogo); //Dialogo con il thread cliente
 			l.lock();
 			//Ora dato che gli ho passato la soluzione devo attendere che la mette in pratica
-			attendiOperatore[codiceTicket] = false; //Gli comunico che io ho finito
-			gestioneTicket[codiceTicket].signal(); //Sveglio il cliente in attesa
-			while ( attendiCliente[codiceTicket] ) { //Mi metto in attesa
-				gestioneTicket[codiceTicket].await();
-			}
+			attendiOperatore[o.codiceTicket] = false; //Gli comunico che io ho finito
+			gestioneTicket[o.codiceTicket].signal(); //Sveglio il cliente in attesa
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -124,12 +120,8 @@ public class CallCenterLC extends CallCenter {
 			//Qui prima di passare al prossimo cliente devo controllare se posso fare la pausa
 			Thread threadCorrente = Thread.currentThread();
 			Operatore o = (Operatore) threadCorrente;
-			int clientiServiti = o.getClientiServiti();
-			if ( clientiServiti%15 == 0 ) {
-				l.unlock();
-				TimeUnit.SECONDS.sleep(15);
-				l.lock();
-				System.out.println(Thread.currentThread().getName()+" ritorna dalla pausa caffe");
+			while ( attendiCliente[o.codiceTicket] ) { //Mi metto in attesa perché deve svolgere lui le operazioni
+				gestioneTicket[o.codiceTicket].await();
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
