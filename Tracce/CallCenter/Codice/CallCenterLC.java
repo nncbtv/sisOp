@@ -16,6 +16,7 @@ public class CallCenterLC extends CallCenter {
 	private boolean [] operatoreAssegnato = new boolean[super.numeroClienti]; //Ogni cliente deve avere assegnato un operatore per andare avanti
 	private boolean [] attendiCliente = new boolean[super.numeroClienti]; //Perché poi ogni thread operatore deve aspettare il suo cliente
 	private boolean [] attendiOperatore = new boolean[super.numeroClienti]; //Perché ogni thread cliente deve aspettare il suo operatore
+	private boolean [] problemaRisolto = new boolean[super.numeroClienti]; //Variante Traccia 4b, mi serve per riproporre soluzioni
 	
 	private Random r = new Random();
 
@@ -26,6 +27,7 @@ public class CallCenterLC extends CallCenter {
 			operatoreAssegnato[i] = false;
 			attendiCliente[i] = true;
 			attendiOperatore[i] = true;
+			problemaRisolto[i] = false;
 		}
 	}//Costruttore
 
@@ -58,7 +60,7 @@ public class CallCenterLC extends CallCenter {
 			Thread threadCorrente = Thread.currentThread();
 			Operatore o = (Operatore) threadCorrente;
 			if (codaFuoriCentralino.isEmpty()){
-				System.out.println(o.getNoperatore()+" Non ha trovato clienti da servire");
+				System.out.println("Sono l'operatore "+o.getNoperatore()+" non ho trovato clienti da servire");
 				o.stop = true; //Questo operatore non riuscira a prendere altri clienti quindi lo fermo
 				return; //non ci sono più thread da servire
 			}
@@ -84,46 +86,62 @@ public class CallCenterLC extends CallCenter {
 	@Override
 	void terminaChiamata() {
 		//Devo attendere che l'operatore mi dia la soluzione, applicarla e poi sbloccarlo
-		l.lock();
-		try {
-			Thread threadCorrente = Thread.currentThread();
-			Cliente c = (Cliente) threadCorrente;
-			int codiceTicket = c.getCodiceCliente();
-			System.out.println("Sono il cliente "+codiceTicket+" sto ascoltando l'operatore");
-			//Attendo che l'operatore mi dia la soluzione
-			while ( attendiOperatore[codiceTicket] ) {
-				gestioneTicket[codiceTicket].await(); //Mi metto in attesa per dialogare con l'operatore
-			}
-			//Arrivato a questo punto l'operatore sta dormendo e aspetta me che faccia le operazioni e che poi lo libero
-			int tempoOperazioni = r.nextInt(2,7);
-			l.unlock();
-			TimeUnit.SECONDS.sleep(tempoOperazioni); //Simulo il tempo delle operazioni
+		Thread threadCorrente = Thread.currentThread();
+		Cliente c = (Cliente) threadCorrente;
+		int codiceTicket = c.getCodiceCliente();
+		while ( !problemaRisolto[codiceTicket]) {
 			l.lock();
-			//A questo punto non mi resta che svegliare il mio operatore
-			attendiCliente[codiceTicket] = false;
-			gestioneTicket[codiceTicket].signal();
-			System.out.println("Sono il cliente "+codiceTicket+" problematica risolta");
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			l.unlock();
+			try {
+				System.out.println("Sono il cliente "+codiceTicket+" sto ascoltando l'operatore");
+				//Attendo che l'operatore mi dia la soluzione
+				while ( attendiOperatore[codiceTicket] ) {
+					gestioneTicket[codiceTicket].await(); //Mi metto in attesa per dialogare con l'operatore
+				}
+				//Arrivato a questo punto l'operatore sta dormendo e aspetta me che faccia le operazioni e che poi lo libero
+				int tempoOperazioni = r.nextInt(2,7);
+				l.unlock();
+				TimeUnit.SECONDS.sleep(tempoOperazioni); //Simulo il tempo delle operazioni
+				l.lock();
+				//Qui devo sapere se le mie operazioni sono andate bene oppure no
+				problemaRisolto[codiceTicket] = r.nextBoolean(); //Randomicamente imposto se il problema è risolto oppure no
+				//A questo punto non mi resta che svegliare il mio operatore
+				attendiCliente[codiceTicket] = false;
+				gestioneTicket[codiceTicket].signal();
+				System.out.println("Sono il cliente "+codiceTicket+" problematica "+(problemaRisolto[codiceTicket]?"risolta":" in corso"));
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				l.unlock();
+			}
 		}
 	}//terminaChiamata
 
 	@Override
 	void prossimoCliente() {
-		l.lock();
-		try {
-			//Qui prima di passare al prossimo cliente devo controllare se posso fare la pausa
-			Thread threadCorrente = Thread.currentThread();
-			Operatore o = (Operatore) threadCorrente;
-			while ( attendiCliente[o.codiceTicket] ) { //Mi metto in attesa perché deve svolgere lui le operazioni
-				gestioneTicket[o.codiceTicket].await();
+		Thread threadCorrente = Thread.currentThread();
+		Operatore o = (Operatore) threadCorrente;
+		while ( !problemaRisolto[o.codiceTicket]) {
+			l.lock();
+			try {
+				//Qui prima di passare al prossimo cliente devo controllare se posso fare la pausa
+				while ( attendiCliente[o.codiceTicket] ) { //Mi metto in attesa perché deve svolgere lui le operazioni
+					gestioneTicket[o.codiceTicket].await();
+				}
+				//Qui devo controllare se le operazioni fornite sono andate a buon fine
+				if (!problemaRisolto[o.codiceTicket]) {
+					int tempoDialogo = r.nextInt(1,5); //Tempo di discussione
+					l.unlock();
+					TimeUnit.SECONDS.sleep(tempoDialogo); //Dialogo con il thread cliente
+					l.lock();
+					//Ora dato che gli ho passato la soluzione devo attendere che la mette in pratica
+					attendiOperatore[o.codiceTicket] = false; //Gli comunico che io ho finito
+					gestioneTicket[o.codiceTicket].signal(); //Sveglio il cliente in attesa
+				}
+			}catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				l.unlock();
 			}
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			l.unlock();
 		}
 	}//prossimoCliente
 
