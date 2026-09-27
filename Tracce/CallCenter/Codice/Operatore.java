@@ -18,16 +18,16 @@ public class Operatore extends Thread {
 	@Override
 	public void run() {
 		try {
-			do {
+			while ( true ) {
 				c.fornisciAssistenza(); //Fornisco Assistenza al cliente
-				if ( stop ) return;
-				clientiServiti +=1; //Incremento il mio contatore dei clienti serviti
+				if ( stop ) return; //Se durante la ricerca di clienti non trovo nulla termino
 				c.prossimoCliente(); //Passa al prossimo cliente
+				clientiServiti +=1; //Incremento il mio contatore dei clienti serviti
 				if ( clientiServiti%15 == 0 ) {
-					TimeUnit.SECONDS.sleep(15);
+					TimeUnit.SECONDS.sleep(5);
 					System.out.println(Thread.currentThread().getName()+" ritorna dalla pausa caffe");
 				}
-			}while ( c.numeroClienti>0 );
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}

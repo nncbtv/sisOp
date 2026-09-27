@@ -57,14 +57,12 @@ public class CallCenterLC extends CallCenter {
 			//Entrato in questa sezione il mio operatore deve scegliere chi servire dalla coda
 			Thread threadCorrente = Thread.currentThread();
 			Operatore o = (Operatore) threadCorrente;
-			if ( !codaFuoriCentralino.isEmpty() ) {
-				o.codiceTicket = codaFuoriCentralino.poll(); //Prendo il primo id in coda, questo ci unisce come worker e cliente
-			}
-			if (o.codiceTicket == -1){
+			if (codaFuoriCentralino.isEmpty()){
 				System.out.println(o.getNoperatore()+" Non ha trovato clienti da servire");
 				o.stop = true; //Questo operatore non riuscira a prendere altri clienti quindi lo fermo
 				return; //non ci sono più thread da servire
 			}
+			o.codiceTicket = codaFuoriCentralino.poll();
 			System.out.println("Sono l'operatore "+o.getNoperatore()+" sto servendo il cliente "+o.codiceTicket);
 			operatoreAssegnato[o.codiceTicket] = true; //Mi assegno al cliente
 			entrataCentralino.signalAll(); //Faccio avanzare il cliente per farlo sedere nella mia scrivania
@@ -104,7 +102,6 @@ public class CallCenterLC extends CallCenter {
 			//A questo punto non mi resta che svegliare il mio operatore
 			attendiCliente[codiceTicket] = false;
 			gestioneTicket[codiceTicket].signal();
-			super.numeroClienti -= 1;
 			System.out.println("Sono il cliente "+codiceTicket+" problematica risolta");
 		}catch (Exception e) {
 			e.printStackTrace();
