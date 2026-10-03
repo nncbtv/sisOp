@@ -6,6 +6,7 @@ public class Operaio extends Thread {
 
 	int tipoOperaio; //0 traverse, 1 rotaie
 	CantiereFerroviarioA cantiere;
+	public boolean turnoLavoro;
 	
 	public Operaio(int tipo, CantiereFerroviarioA c) {
 		this.tipoOperaio = tipo;
@@ -27,7 +28,7 @@ public class Operaio extends Thread {
 				cantiere.termina(tipoOperaio);
 				//Devo riposarmi dopo un lungo lavoro prima di ricominciare
 				TimeUnit.SECONDS.sleep(10);
-			}while (true);
+			}while (turnoLavoro);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
