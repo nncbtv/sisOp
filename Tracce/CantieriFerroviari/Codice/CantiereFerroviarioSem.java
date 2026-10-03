@@ -34,6 +34,13 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 	void lavora(int t) { //0 traversa, 1 rotaia
 		//Devo cercare un binario in cui serve il mio lavoro
 		try {
+			if ( binariCostruiti == super.binariInCostruzione ) { //Non devo cercare altri binari su cui lavorare
+				Operaio o = (Operaio) Thread.currentThread();
+		        o.turnoLavoro = false; //Imposto l'operaio a false per farlo finire di lavorare
+		        attenditurnoRotaia.release();
+		        attendiTurnoTraversa.release();
+		        return;
+			} 
 			int binarioScelto = -1; //Armo il flag a -1 per indicare che non ho trovato binario su cui lavorare
 			while (binarioScelto == -1 ) { //Continuo a cercare finché non ne trovo uno
 			    if ( binariCostruiti == super.binariInCostruzione ){
@@ -46,7 +53,7 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 					if ( t == 0 ) { //Se sono un operaio delle traverse controllo se serve una traversa
 						if ( serveTraversa[i] == true && !(binarioOccupato[i]) ) { //Il binario deve chiedere una traversa e deve essere libero
 							if ( traversePosizionate[i] == super.N_TRAVERSE ){ //Significa che in questo binario non devo continuare a costruire
-							    continue; //Passo al prossimo binario
+								continue; //Passo al prossimo binario
 							}
 							binarioScelto = i; //Prendo il binario a cui serve la traversa e salvo il suo numero
 							serveTraversa[i] = false; //Dopo aver posizionato la traversa necessito della rotaia, aggiorno il flag
@@ -68,7 +75,7 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 				if ( binarioScelto == -1 ) {
 					if ( t == 0) {
 						attendiTurnoTraversa.acquire(); //Lo faccio aspettare finché qualcuno non lo risveglia, il semaforo è inizializzato a zero permessi
-						System.out.println(Thread.currentThread().getName()+" Aspetta	 per posizionare una traversa");
+						System.out.println(Thread.currentThread().getName()+" Aspetta per posizionare una traversa");
 					}
 					if ( t == 1) {
 						attenditurnoRotaia.acquire(); //Lo faccio aspettare finché qualcuno non lo risveglia, il semaforo è inizializzato a zero permessi
@@ -98,25 +105,29 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 		    if ( binariCostruiti == super.binariInCostruzione ){ //Controllo se sono stati costruiti tutti i binari
 			        Operaio o = (Operaio) Thread.currentThread();
 			        o.turnoLavoro = false; //Imposto l'operaio a false per farlo finire di lavorare
+			        attenditurnoRotaia.release();
+			        attendiTurnoTraversa.release();
 			        return;
 			    }
 			mutex.acquire(); //Perché devo accedere alla mappa condivisa e modificare i flag condivisi
 			int mioBinario = sceltaBinari.get(Thread.currentThread()); //Prendo il numero di binario su cui stavo lavorando
 			if ( t == 0 ) {//Sono un lavoratore della traversa
+				System.out.println(Thread.currentThread().getName()+" Ha posizionato una traversa sul binario "+mioBinario);
 				binarioOccupato[mioBinario] = false; //Libero il binario, subito perché qualcuno potrebbe volerci accedere
 				serveTraversa[mioBinario] = false; //Perché l'ho appena posizionata io
 				traversePosizionate[mioBinario] += 1; //Aggiorno il contatore delle traverse
 				attenditurnoRotaia.release(); //Avviso chi era in attesa di posizionare una rotaia
-				System.out.println(Thread.currentThread().getName()+" Ha posizionato una traversa sul binario "+mioBinario);
 			}
 			if ( t == 1 ) {//Stessa logica di prima sull'operaio rotaia
+				System.out.println(Thread.currentThread().getName()+" Ha posizionato una rotaia sul binario "+mioBinario);
 				binarioOccupato[mioBinario] = false;
 				serveTraversa[mioBinario] = true;
 				if ( traversePosizionate[mioBinario] == super.N_TRAVERSE ){//Dopo aver posizionato la rotaia questo binario è completato
-				    binariCostruiti += 1;
+				    System.out.println(Thread.currentThread().getName()+" Abbiamo costruito il binario "+mioBinario);
+					binariCostruiti += 1;
+					binarioOccupato[mioBinario] = true; //Lo lascio a true per non farlo selezionare dagli altri operai
 				}
 				attendiTurnoTraversa.release();
-				System.out.println(Thread.currentThread().getName()+" Ha posizionato una rotaia sul binario "+mioBinario);
 			}
 			mutex.release(); //Fine riarmo, fine segnali, fine modifica dati condivisi
 		} catch (Exception e) {
