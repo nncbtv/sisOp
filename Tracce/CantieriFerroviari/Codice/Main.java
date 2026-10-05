@@ -6,7 +6,7 @@ public class Main {
 		int m = 3, operaioR = 4, operaioT = 4, n = 4;
 		Operaio [] operaioRotaia = new Operaio[operaioR];
 		Operaio [] operaioTraversa = new Operaio[operaioT];
-		CantiereFerroviarioA FRI = new CantiereFerroviarioSem(m, n);
+		CantiereFerroviarioA FRI = new CantiereFerroviarioSem(m, n, operaioT, operaioR);
 		for ( int i = 0; i<operaioR; i++ ) {
 			operaioRotaia[i] = new Operaio(1, FRI);
 			operaioRotaia[i].start();

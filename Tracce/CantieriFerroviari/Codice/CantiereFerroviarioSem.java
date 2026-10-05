@@ -7,7 +7,7 @@ import java.util.concurrent.Semaphore;
 public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 
 	//Ogni binario verrà costruito in questo modo: traversa,rotaia in modo alternato sul vettore serveTraversa
-	boolean [] serveTraversa = new boolean[super.binariInCostruzione];
+	boolean [] serveTraversa = new boolean[super.binariInCostruzione]; //Alterno il posizionamento tra traversa e rotaia
 	boolean [] binarioOccupato = new boolean[super.binariInCostruzione]; //Perché su un binario ci può lavorare solo un operatore
 	int [] traversePosizionate = new int[super.binariInCostruzione]; //Contatore che mi serve per bloccare le traverse su un binario
     int binariCostruiti = 0; //Mi devo fermare appena finisco i binari da costruire
@@ -19,10 +19,10 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 	//Mutua esclusione per aggiornare lo stato del binario e trattare i dati condivisi
 	Semaphore mutex = new Semaphore(1);
 
-	Map<Thread, Integer> sceltaBinari = new HashMap<Thread, Integer>(); //Per associare un thread ad un binario scelto
+	Map<Thread, Integer> sceltaBinari = new HashMap<Thread, Integer>(); //Per associare un thread ad un binario da lui scelto
 
-	public CantiereFerroviarioSem(int binariDaCostruire, int lb) {
-		super(binariDaCostruire, lb); //Riporto i dati alla classe astratta
+	public CantiereFerroviarioSem(int binariDaCostruire, int lb, int operaiT, int operaiR) {
+		super(binariDaCostruire, lb, operaiT, operaiR); //Riporto i dati alla classe astratta
 		for ( int i = 0; i<super.binariInCostruzione; i++ ) { //Armo i flag
 			serveTraversa[i] = true; //Perché come base devo avere le traverse
 			binarioOccupato[i] = false; //Inizialmente nessun operaio stava lavorando sui binari
@@ -34,13 +34,6 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 	void lavora(int t) { //0 traversa, 1 rotaia
 		//Devo cercare un binario in cui serve il mio lavoro
 		try {
-			if ( binariCostruiti == super.binariInCostruzione ) { //Non devo cercare altri binari su cui lavorare
-				Operaio o = (Operaio) Thread.currentThread();
-		        o.turnoLavoro = false; //Imposto l'operaio a false per farlo finire di lavorare
-		        attenditurnoRotaia.release();
-		        attendiTurnoTraversa.release();
-		        return;
-			} 
 			int binarioScelto = -1; //Armo il flag a -1 per indicare che non ho trovato binario su cui lavorare
 			while (binarioScelto == -1 ) { //Continuo a cercare finché non ne trovo uno
 			    if ( binariCostruiti == super.binariInCostruzione ){
@@ -49,6 +42,13 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 			        return;
 			    }
 				mutex.acquire(); //Perché devo proteggere i dati condivisi
+				if ( binariCostruiti == super.binariInCostruzione ) { //Non devo cercare altri binari su cui lavorare
+					Operaio o = (Operaio) Thread.currentThread();
+					o.turnoLavoro = false; //Imposto l'operaio a false per farlo finire di lavorare
+					attenditurnoRotaia.release(super.N_OPERAI_ROTAIE);
+					attendiTurnoTraversa.release(super.N_OPERAI_TRAVERSE);
+					return;
+				} 
 				for ( int i = 0; i<super.binariInCostruzione; i++ ) { //Comincio a scorrere tutti i binari
 					if ( t == 0 ) { //Se sono un operaio delle traverse controllo se serve una traversa
 						if ( serveTraversa[i] == true && !(binarioOccupato[i]) ) { //Il binario deve chiedere una traversa e deve essere libero
@@ -102,14 +102,14 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 	void termina(int t) {//0 traversa, 1 rotaia
 		//Arrivato a questo punto devo riarmare i flag dicendo che sono andato via e passo il turno al prossimo
 		try {
-		    if ( binariCostruiti == super.binariInCostruzione ){ //Controllo se sono stati costruiti tutti i binari
-			        Operaio o = (Operaio) Thread.currentThread();
-			        o.turnoLavoro = false; //Imposto l'operaio a false per farlo finire di lavorare
-			        attenditurnoRotaia.release();
-			        attendiTurnoTraversa.release();
-			        return;
-			    }
 			mutex.acquire(); //Perché devo accedere alla mappa condivisa e modificare i flag condivisi
+			if ( binariCostruiti == super.binariInCostruzione ){ //Controllo se sono stati costruiti tutti i binari
+				Operaio o = (Operaio) Thread.currentThread();
+				o.turnoLavoro = false; //Imposto l'operaio a false per farlo finire di lavorare
+				attenditurnoRotaia.release(super.N_OPERAI_ROTAIE);
+				attendiTurnoTraversa.release(super.N_OPERAI_TRAVERSE);
+				return;
+			}
 			int mioBinario = sceltaBinari.get(Thread.currentThread()); //Prendo il numero di binario su cui stavo lavorando
 			if ( t == 0 ) {//Sono un lavoratore della traversa
 				System.out.println(Thread.currentThread().getName()+" Ha posizionato una traversa sul binario "+mioBinario);

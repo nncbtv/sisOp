@@ -15,7 +15,7 @@ public class Operaio extends Thread {
 	
 	public void run() {
 		try {
-			do {
+			while (turnoLavoro) {
 				//In base al tipo prima di tutto devo cominciare a preparere il materiale
 				if ( tipoOperaio == 0 ) {
 					TimeUnit.SECONDS.sleep(20); //Tempo traverse
@@ -28,7 +28,7 @@ public class Operaio extends Thread {
 				cantiere.termina(tipoOperaio);
 				//Devo riposarmi dopo un lungo lavoro prima di ricominciare
 				TimeUnit.SECONDS.sleep(10);
-			}while (turnoLavoro);
+			}
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
