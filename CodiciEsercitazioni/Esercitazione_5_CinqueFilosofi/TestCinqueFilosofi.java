@@ -1,6 +1,6 @@
-package sisOp.Esercitazione_5_CinqueFilosofi;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi;
 
-import sisOp.Esercitazione_6_CinqueFilosofi.TavoloLock;
+import sisOp.CodiciEsercitazioni.Esercitazione_6_CinqueFilosofi.TavoloLock;
 
 public class TestCinqueFilosofi {
 	public static void main(String[] arg) {

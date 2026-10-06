@@ -1,10 +1,10 @@
-package sisOp.Esercitazione_6_BufferLock;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_BufferLock;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import sisOp.Esercitazione_5_Buffer.Buffer;
+import sisOp.CodiciEsercitazioni.Esercitazione_5_Buffer.Buffer;
 
 public class BufferLock extends Buffer {
 

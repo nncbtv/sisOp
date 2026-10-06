@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_CinqueFilosofi;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi;
 
 public abstract class Tavolo {
 	private final static int FILOSOFI = 5;

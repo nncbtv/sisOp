@@ -1,10 +1,10 @@
-package sisOp.Esercitazione_6_MemoriaCondivisaLock;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_MemoriaCondivisaLock;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import sisOp.Esercitazione_5_MemoriaCondivisa.MemoriaCondivisa;
+import sisOp.CodiciEsercitazioni.Esercitazione_5_MemoriaCondivisa.MemoriaCondivisa;
 
 public class MemoriaCondivisaLock extends MemoriaCondivisa {
 	/*

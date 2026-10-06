@@ -1,4 +1,4 @@
-package sisOp.contoCorrente;
+package sisOp.CodiciEsercitazioni.contoCorrente;
 
 public abstract class ContoCorrente { //Astraggo l'oggetto ContoCorrente così che ogni correntista abbia il suo
 

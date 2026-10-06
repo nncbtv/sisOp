@@ -1,11 +1,9 @@
-package sisOp.Esercitazione_6_ContoCorrenteLock;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_ContoCorrenteLock;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import sisOp.contoCorrente.ContoCorrente;
-
-public class ContoCorrenteLock extends ContoCorrente{
+public class ContoCorrenteLock extends sisOp.CodiciEsercitazioni.contoCorrente.ContoCorrente{
 
 	private Lock l = new ReentrantLock();
 	

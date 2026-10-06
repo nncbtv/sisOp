@@ -1,6 +1,6 @@
-package sisOp.Esercitazione_5_MemoriaCondivisa;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_MemoriaCondivisa;
 
-import sisOp.Esercitazione_6_MemoriaCondivisaLock.MemoriaCondivisaLock;
+import sisOp.CodiciEsercitazioni.Esercitazione_6_MemoriaCondivisaLock.MemoriaCondivisaLock;
 
 public class TestMemoriaCondivisa {
 

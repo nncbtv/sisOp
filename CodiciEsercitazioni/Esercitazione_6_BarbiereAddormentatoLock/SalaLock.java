@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_6_BarbiereAddormentatoLock;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_BarbiereAddormentatoLock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import sisOp.Esercitazione_5_BarbiereAddormentato.Cliente;
+import sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato.Cliente;
 
-public class SalaLock extends sisOp.Esercitazione_5_BarbiereAddormentato.Sala {
+public class SalaLock extends sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato.Sala {
 	
 	private Lock l = new ReentrantLock();
 	private Condition attendiTaglio = l.newCondition();

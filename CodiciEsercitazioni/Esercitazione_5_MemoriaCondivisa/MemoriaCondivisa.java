@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_MemoriaCondivisa;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_MemoriaCondivisa;
 
 public abstract class MemoriaCondivisa {
 	//Questa classe garantisce l'interfaccia di accesso alla memoria condivisa da parte dei thread

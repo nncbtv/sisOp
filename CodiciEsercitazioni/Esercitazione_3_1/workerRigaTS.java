@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_3_1;
+package sisOp.CodiciEsercitazioni.Esercitazione_3_1;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

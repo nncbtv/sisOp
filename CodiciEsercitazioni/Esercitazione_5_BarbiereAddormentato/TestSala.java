@@ -1,6 +1,6 @@
-package sisOp.Esercitazione_5_BarbiereAddormentato;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato;
 
-import sisOp.Esercitazione_6_BarbiereAddormentatoLock.SalaLock;
+import sisOp.CodiciEsercitazioni.Esercitazione_6_BarbiereAddormentatoLock.SalaLock;
 
 public class TestSala {
 	public static void main(String[] args) throws InterruptedException {

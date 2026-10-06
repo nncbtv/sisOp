@@ -1,4 +1,4 @@
-package sisOp.contoCorrente;
+package sisOp.CodiciEsercitazioni.contoCorrente;
 
 //QUESTA IMPLEMENTAZIONE NON HA MECCANISMI DI SINCRONISMO TRA I THREAD
 public class ContoCorrenteNTS extends ContoCorrente{
