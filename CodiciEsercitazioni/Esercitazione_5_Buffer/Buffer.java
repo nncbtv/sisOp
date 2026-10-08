@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_Buffer;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_Buffer;
 
 public abstract class Buffer {
 

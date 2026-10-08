@@ -1,6 +1,6 @@
-package sisOp.contoCorrente;
+package sisOp.CodiciEsercitazioni.contoCorrente;
 
-import sisOp.Esercitazione_6_ContoCorrenteLock.ContoCorrenteLock;
+import sisOp.CodiciEsercitazioni.Esercitazione_6_ContoCorrenteLock.ContoCorrenteLock;
 
 public class Main {
 

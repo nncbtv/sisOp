@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_MemoriaCondivisa;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_MemoriaCondivisa;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;

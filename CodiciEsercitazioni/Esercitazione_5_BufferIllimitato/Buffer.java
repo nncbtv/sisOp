@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_BufferIllimitato;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_BufferIllimitato;
 
 import java.util.ArrayList;
 import java.util.List;

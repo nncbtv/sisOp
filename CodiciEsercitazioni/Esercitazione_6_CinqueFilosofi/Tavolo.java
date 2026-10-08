@@ -1,8 +1,8 @@
-package sisOp.Esercitazione_6_CinqueFilosofi;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_CinqueFilosofi;
 
-import sisOp.Esercitazione_5_CinqueFilosofi.Filosofo;
+import sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi.Filosofo;
 
-public abstract class Tavolo extends sisOp.Esercitazione_5_CinqueFilosofi.Tavolo { //Estendo lo scorso tavolo
+public abstract class Tavolo extends sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi.Tavolo { //Estendo lo scorso tavolo
 
 	private final static int FILOSOFI = 5;
 	protected boolean[] bacchette = new boolean[FILOSOFI]; //riga in più al tavolo precedente, libera false, occupata true

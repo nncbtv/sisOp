@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_6_CinqueFilosofi;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_CinqueFilosofi;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

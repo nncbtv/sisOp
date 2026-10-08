@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_6_3;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_3;
 
 public abstract class CodaThread {
 	

@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_9_Future_Callable;
+package sisOp.CodiciEsercitazioni.Esercitazione_9_Future_Callable;
 
 public class Saluti implements Runnable{
 	

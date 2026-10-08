@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_BarbiereAddormentato;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato;
 
 import java.util.concurrent.TimeUnit;
 

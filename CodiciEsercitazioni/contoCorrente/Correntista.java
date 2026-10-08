@@ -1,4 +1,4 @@
-package sisOp.contoCorrente;
+package sisOp.CodiciEsercitazioni.contoCorrente;
 
 import java.util.Random;
 

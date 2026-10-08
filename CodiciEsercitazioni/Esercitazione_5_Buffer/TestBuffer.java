@@ -1,7 +1,7 @@
-package sisOp.Esercitazione_5_Buffer;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_Buffer;
 
-import sisOp.Esercitazione_6_BufferLock.BufferLock;
-import sisOp.Esercitazione_6_BufferLock.BufferLockFIFO;
+import sisOp.CodiciEsercitazioni.Esercitazione_6_BufferLock.BufferLock;
+import sisOp.CodiciEsercitazioni.Esercitazione_6_BufferLock.BufferLockFIFO;
 
 public class TestBuffer {
 

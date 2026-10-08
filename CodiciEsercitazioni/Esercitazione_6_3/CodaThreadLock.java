@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_6_3;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_3;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

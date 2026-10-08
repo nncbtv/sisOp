@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_6_BufferLock;
+package sisOp.CodiciEsercitazioni.Esercitazione_6_BufferLock;
 
 import java.util.LinkedList;
 

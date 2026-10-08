@@ -1,4 +1,4 @@
-package sisOp.Esercitazione_5_CinqueFilosofi;
+package sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi;
 
 public class Filosofo implements Runnable {
 	
