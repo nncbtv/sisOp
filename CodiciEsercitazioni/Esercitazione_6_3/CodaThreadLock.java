@@ -9,7 +9,7 @@ public class CodaThreadLock extends CodaThread {
 	private int turno = 0; //Per capire se è il thread che dobbiamo servire (contatore)
 	private Lock l = new ReentrantLock(); //Lock per l'accesso in sezione critica
 	private Condition aspetta = l.newCondition(); //Condiziopne su cui attendere se arrivo e non è il mio turno
-	
+
 	public CodaThreadLock(int n) {
 		super(n);
 	}//Costruttore

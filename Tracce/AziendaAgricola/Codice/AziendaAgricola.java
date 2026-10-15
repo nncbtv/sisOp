@@ -5,12 +5,12 @@ public abstract class AziendaAgricola {
 	protected int sacchiDisponibili = 200; //Sacchetti disponibili alla vendita
 	protected int costoSacco = 3;
 	protected int saldoFinale = 0;
-	
+
 	abstract void pagaSacchetti ( int nSacchetti ) throws InterruptedException;
 	abstract void ritiroSacchetti ( int nSacchetti ) throws InterruptedException;
-	
+
 	abstract void refillMagazzino() throws InterruptedException;
-	
+
 	void test(int nClienti) throws InterruptedException {
 		Magazziniere operaioMagazziniere = new Magazziniere(this);
 		Thread magazziniere = new Thread(operaioMagazziniere);
@@ -27,9 +27,9 @@ public abstract class AziendaAgricola {
 		magazziniere.join(); //Aspetto che termini effettivamente il thread
 		mostraIncasso();
 	}//test
-	
+
 	void mostraIncasso() {
 		System.out.println("L'incasso finale è: "+saldoFinale);
 	}//mostraIncasso
-	
+
 }//AziendaAgricola

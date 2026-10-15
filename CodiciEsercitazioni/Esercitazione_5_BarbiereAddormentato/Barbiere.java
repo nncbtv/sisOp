@@ -8,7 +8,7 @@ public class Barbiere extends Thread{//Estendo Thread perché ho bisogno di esse
 	public Barbiere( Sala s) {
 		salone = s;
 	}//Costruttore
-	
+
 	@Override
 	public void run() {
 		while(true) {

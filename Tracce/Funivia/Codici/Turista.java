@@ -1,10 +1,10 @@
 package sisOp.Tracce.Funivia.Codici;
 
 public class Turista extends Thread{
-	
+
 	private int tipoTurista;
 	private Funivia f;
-	
+
 	public Turista(int t, Funivia fun) {
 		this.f = fun;
 		this.tipoTurista = t;
@@ -19,11 +19,12 @@ public class Turista extends Thread{
 			System.out.println("Errore nel turista");
 		}
 	}
-	
+
 	public int getTipoTurista() {
 		return tipoTurista;
 	}//getTipoTurista
-	
+
+	@Override
 	public String toString() {
 		if ( tipoTurista == 0 ) {
 			return "Turista a piedi";

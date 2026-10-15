@@ -6,5 +6,5 @@ public class Main {
 		CasaDiCura sacroCuore = new CasaDiCuraLock(12);
 		sacroCuore.test();
 	}//main
-	
+
 }//Main

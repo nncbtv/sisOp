@@ -8,11 +8,11 @@ public class Produttore implements Runnable {
 	private static final int MAX_RANDOM = 10;
 	private Random random = new Random();
 	private Buffer buffer; //Buffer su cui lavorare
-	
+
 	public Produttore ( Buffer b ) {
 		this.buffer = b;
 	}//Costruttore della classe per prendere il buffer su cui lavore
-	
+
 	@Override
 	public void run() {
 		try {
@@ -29,5 +29,5 @@ public class Produttore implements Runnable {
 		TimeUnit.SECONDS.sleep(1); //Mi addormento per 1s come se stessi producendo
 		return random.nextInt(MAX_RANDOM); //Creo un prodotto, valore random da consumare poi
 	}
-	
+
 }//Produttore

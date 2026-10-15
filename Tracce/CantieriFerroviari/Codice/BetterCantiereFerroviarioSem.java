@@ -12,16 +12,16 @@ public class BetterCantiereFerroviarioSem extends CantiereFerroviarioA{
 	private volatile boolean orarioLavorativo = true; //Mi serve per arrestare il cantiere, volatile permette agli altri thread di vedere correttamente la modifica fatta da un thread
 	private int binariCostruiti = 0; //Serve per tenere conto di quanti altri binari dobbiamo costruire prima di fermarci
 	private Map<Thread, Integer> binarioAssociato = new HashMap<>(); //Per associare Thread->Binario
-	
+
 	private Semaphore mutex = new Semaphore(1); //Per proteggere i dati condivisi tra i thread
 	private Semaphore attendiTurnoRotaia = new Semaphore(0); //Se non ci sono binari con la necessità di una rotaia aspetto, zero permessi
 	private Semaphore attendiTurnoTraversa = new Semaphore(0); //Se non ci sono binari con la necessità di una traversa aspetto, qualcuno mi sveglierà
-	
+
 	public boolean cantiereAperto() { //Questo metodo mi aiuta ad arrestare i thread oltre che a eseguirli per il tempo necessario alla costruzione
 		//Andrebbe modificata anche la classe astratta per essere coerenti con le specifiche della variante dell'esercizio
 		return orarioLavorativo; //Il cantiere rimane aperto finche ci sono binari da costruire
 	}//cantiereAperto
-	
+
 	public BetterCantiereFerroviarioSem(int binariDaCostruire, int lb, int operaiT, int operaiR) {
 		super(binariDaCostruire, lb, operaiT, operaiR); //Riporto i dati alla classe astratta
 		for (int i = 0; i<super.binariInCostruzione; i++ ) {
@@ -70,7 +70,9 @@ public class BetterCantiereFerroviarioSem extends CantiereFerroviarioA{
 	@Override
 	void termina(int t) {
 		//Arrivato a questo punto devo finire il mio lavoro sul binario
-		if ( !cantiereAperto() ) return; //Esco dal metodo perché il cantiere è chiuso
+		if ( !cantiereAperto() ) {
+			return; //Esco dal metodo perché il cantiere è chiuso
+		}
 		try {
 			mutex.acquire(); //Perché devo lavorare sui dati condivisi
 			int mioBinario = binarioAssociato.get(Thread.currentThread()); //Prendo il binario su cui stavo lavorando

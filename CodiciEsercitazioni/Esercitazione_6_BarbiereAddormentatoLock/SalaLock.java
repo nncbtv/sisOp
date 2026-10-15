@@ -10,16 +10,16 @@ import java.util.concurrent.locks.ReentrantLock;
 import sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato.Cliente;
 
 public class SalaLock extends sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato.Sala {
-	
+
 	private Lock l = new ReentrantLock();
 	private Condition attendiTaglio = l.newCondition();
 	private Condition barbiereDorme = l.newCondition();
 	protected boolean poltronaLibera = true;
-	protected List<Cliente> codaClienti = new ArrayList<Cliente>();
+	protected List<Cliente> codaClienti = new ArrayList<>();
 
 	public SalaLock(int posti) {
 		super(posti);
-		// TODO Auto-generated constructor stub
+
 	}//costruttore
 
 	@Override
@@ -44,7 +44,9 @@ public class SalaLock extends sisOp.CodiciEsercitazioni.Esercitazione_5_Barbiere
 		Cliente c = (Cliente)Thread.currentThread();
 		try {
 			//Il rilascio del lucchetto viene fatto dal finally anche in caso di return
-			if ( sedieLibere == 0 ) return false;
+			if ( sedieLibere == 0 ) {
+				return false;
+			}
 			codaClienti.addLast(c); //Mi metto in coda
 			sedieLibere--; //Mi siedo su una sedia della sala
 			barbiereDorme.signal(); //Sveglio il barbiere che dorme perché è arrivato un cliente
@@ -65,5 +67,5 @@ public class SalaLock extends sisOp.CodiciEsercitazioni.Esercitazione_5_Barbiere
 	private boolean mioTurno(int i) {//Controllo se è il mio turno
 		return codaClienti.getFirst().getID() == i && poltronaLibera;
 	}//mioTurno
-	
+
 }//SalaLock

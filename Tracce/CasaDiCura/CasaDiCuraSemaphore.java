@@ -5,13 +5,13 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class CasaDiCuraSemaphore extends CasaDiCura {
-	
+
 	private Semaphore salaPreparazione; //Questo semaforo mi gestisce le entrate nella sala di preparazione
 	private Semaphore salaOperazione; //Questo semaforo mi gestisce la sala operazione
 	private Semaphore attendiOperazione; //Mi serve per non fare uscire dalla sala operatoria i pazienti
 	private Random r; //Mi serve per generare numeri randomici per simulare le azioni tramite le attese
 	private Semaphore attendiPaziente; //Il medico deve attendere un paziente che entri nella sala operatoria
-	
+
 	public CasaDiCuraSemaphore(int numeroPazienti) {
 		super(numeroPazienti); //Uso il costruttore della classe da cui eredito
 		salaPreparazione = new Semaphore(3); //Possono entrare al massimo 3 pazienti per volta
@@ -20,7 +20,7 @@ public class CasaDiCuraSemaphore extends CasaDiCura {
 		r = new Random(); //Generatore di numeri casuali per le attese
 		attendiPaziente = new Semaphore(0); //Rendo il programma più deterministico possibile
 	}//Costruttore che rimanda al superiore
-	
+
 
 	@Override
 	void chiamaEIniziaOperazione() {

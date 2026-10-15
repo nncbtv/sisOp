@@ -1,13 +1,15 @@
 package sisOp.CodiciEsercitazioni.Esercitazione_3_1;
 
 public class workerColonnaNTS implements Runnable {
-	
+
 	int [][] matrice; //Matrice da dove prendere gli elementi
 	private int nOperazioni; //Numero di operazioni che deve fare il thread
 	private int colonna; //Colonna da incrementare
-	
+
 	public workerColonnaNTS(int [][] matrice, int nOperazioni, int colonna) {
-		if ( matrice == null || nOperazioni == 0 ) throw new IllegalArgumentException();
+		if ( matrice == null || nOperazioni == 0 ) {
+			throw new IllegalArgumentException();
+		}
 		this.matrice = matrice;
 		this.nOperazioni = nOperazioni;
 		this.colonna = colonna;

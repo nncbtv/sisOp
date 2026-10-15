@@ -3,7 +3,7 @@ package sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Sala {
-	
+
 	protected int sedieLibere, sedie;
 	//Creo una sala con n posti a sedere
 	public Sala(int posti) {

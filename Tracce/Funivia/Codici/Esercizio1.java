@@ -7,8 +7,9 @@ public class Esercizio1 {
 
 	static Semaphore semA = new Semaphore(2), semB = new Semaphore(0);
 	static int count = 0;
-	
+
 	static class A extends Thread{
+		@Override
 		public void run() {
 			while(true) {
 				try {
@@ -21,8 +22,9 @@ public class Esercizio1 {
 			}
 		}//run
 	}//A
-	
+
 	static class B extends Thread{
+		@Override
 		public void run() {
 			while(true) {
 				try {
@@ -37,7 +39,7 @@ public class Esercizio1 {
 			}
 		}//run
 	}//B
-	
+
 	public static void main(String[] args) {
 		new A().start();
 		new B().start();

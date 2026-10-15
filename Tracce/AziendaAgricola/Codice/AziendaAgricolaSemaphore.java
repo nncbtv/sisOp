@@ -9,7 +9,7 @@ public class AziendaAgricolaSemaphore extends AziendaAgricola{
 	private Semaphore codaMagazzino;
 	private Semaphore attendiMagazziniere;
 	private Semaphore svegliaMagazziniere;
-	
+
 	public AziendaAgricolaSemaphore() {
 		codaCassa = new Semaphore(1, true); //True mi gestisce il fifo
 		codaMagazzino = new Semaphore(1, true);
@@ -62,5 +62,5 @@ public class AziendaAgricolaSemaphore extends AziendaAgricola{
 			System.out.println("Errore nel refill");
 		}
 	}//refillMagazzino
-	
+
 }//AziendaAgricolaSemaphore

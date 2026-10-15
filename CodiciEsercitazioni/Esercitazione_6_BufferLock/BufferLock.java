@@ -15,8 +15,8 @@ public class BufferLock extends Buffer {
 	protected Condition bufferVuoto = l.newCondition();
 	//Contatore degli elementi nel buffer
 	protected int nElementi = 0;
-	
-	
+
+
 	public BufferLock(int dimensione) {
 		super(dimensione);
 	}//Costruttore
@@ -36,7 +36,7 @@ public class BufferLock extends Buffer {
 		} finally {
 			l.unlock(); //Rilascio il lucchetto
 		}
-		
+
 	}//put
 
 	@Override
@@ -44,7 +44,7 @@ public class BufferLock extends Buffer {
 		int i; //Variabile da ritornare
 		l.lock();
 		try {
-			while ( nElementi == 0) { 
+			while ( nElementi == 0) {
 				//Se non ci sono elementi nel buffer mi addormento sulla condition
 				bufferVuoto.await();
 			}

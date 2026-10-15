@@ -8,13 +8,13 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CaselloAutostradaleLock extends CaselloAutostradale {
-	
+
 	private ReentrantLock[] porteCasello = new ReentrantLock[super.nPorte]; //Un lock per ogni porta del casello
 	private Condition [] c = new Condition[super.nPorte]; //Una condizione su cui attendere per ogni porta
 	private Queue<Thread>[] code = new Queue[super.nPorte]; //Per gestire i thread in ordine FIFO
 	private boolean [] occupata = new boolean[super.nPorte]; //Se la porta è occupata mi fermo
 	private ReentrantLock mutex = new ReentrantLock(); //Per gestire la mutua esclusione sulla variabile incasso
-	
+
 	public CaselloAutostradaleLock() {
 		for ( int i = 0; i<super.nPorte; i++ ) {
 			porteCasello[i] = new ReentrantLock();
@@ -23,7 +23,7 @@ public class CaselloAutostradaleLock extends CaselloAutostradale {
 			occupata[i] = false;
 		}
 	}//costruttore e inizializzazione
-	
+
 	@Override
 	public void accodamento(int p) {
 		porteCasello[p].lock(); //Arrivo alla porta e voglio mettermi in coda

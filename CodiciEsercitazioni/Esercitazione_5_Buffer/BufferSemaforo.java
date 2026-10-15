@@ -3,7 +3,7 @@ package sisOp.CodiciEsercitazioni.Esercitazione_5_Buffer;
 import java.util.concurrent.Semaphore;
 
 public class BufferSemaforo extends Buffer {
-	
+
 	private Semaphore ciSonoElementi = new Semaphore(0); //Per garantire che la lettura venga fatta solo se ci sono gli elementi
 	private Semaphore ciSonoPostiVuoti;
 	private Semaphore mutex = new Semaphore(1); //Per garantire la mutua esclusione
@@ -22,7 +22,7 @@ public class BufferSemaforo extends Buffer {
 		in = (in+1)%buffer.length; //Resetto l'indice con l'operazione di modulo, (n+1) perchè devo andare alla prosiima cella
 		mutex.release(); //Lascio il mutex per far scrivere ad un altro thread
 		ciSonoElementi.release(); //Aggiungo un permesso per la lettura
-		
+
 	}
 
 	@Override

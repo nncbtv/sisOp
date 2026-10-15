@@ -14,8 +14,9 @@ public class Esericzio3 {
 		//Nessuna join, il thread main non aspetterà il thread t2
 		System.out.println(t2.getState().equals(State.RUNNABLE)); //Non deterministico, potrebbe finire prima o dopo del thread main
 	}//main
-	
+
 	static class MyThread implements Runnable{
+		@Override
 		public void run() {
 			System.out.println("SISOP");
 		}//run

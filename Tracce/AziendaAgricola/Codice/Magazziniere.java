@@ -1,9 +1,9 @@
 package sisOp.Tracce.AziendaAgricola.Codice;
 
 public class Magazziniere implements Runnable {
-	
+
 	AziendaAgricola azienda;
-	
+
 	public Magazziniere(AziendaAgricola a) {
 		this.azienda = a;
 	}//costruttore
@@ -18,5 +18,5 @@ public class Magazziniere implements Runnable {
 			System.out.println("Il magazziniere ha finito il turno");
 		}
 	}//run
-	
+
 }//Magazziniere

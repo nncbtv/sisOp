@@ -1,7 +1,7 @@
 package sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi;
 
 public class Filosofo implements Runnable {
-	
+
 	private Tavolo t;
 	private int posizione;
 
@@ -9,7 +9,7 @@ public class Filosofo implements Runnable {
 		this.t = t;
 		this.posizione = i;
 	}//Costruttore
-	
+
 	@Override
 	public void run() {
 		while(true) {

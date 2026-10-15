@@ -3,16 +3,16 @@ package sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi;
 import java.util.concurrent.Semaphore;
 
 public class TavoloSem extends Tavolo {
-	
+
 	Semaphore [] bacchetta = new Semaphore[getFilosofi()]; //Le bacchette sono le risorse da assegnare
 	Semaphore mutex = new Semaphore(1); //Per garantire assenza di deadlock
-	
+
 	public TavoloSem() {
 		for (int i = 0; i<getFilosofi(); i++) {
 			bacchetta[i] = new Semaphore(1); //Inizializzo ad 1 ogni permesso per la bacchetta, una bacchetta un filosofo
 		}
 	}
-	
+
 	@Override
 	public void prendiBacchette(int i) throws InterruptedException {
 		mutex.acquire(); //Atomicamente sono l'unico a prendere le bacchette, cosi non c'è un altro che mi prende la mia
@@ -30,5 +30,5 @@ public class TavoloSem extends Tavolo {
 
 	//Questo accesso alle bacchette secondo me è il migliore, fare il filosofo mancino non avrebbe senso
 	//Dato che dipende dal numero di filosofi anche se per ovviare potrei fare il primo
-	
+
 }//TavoloSem

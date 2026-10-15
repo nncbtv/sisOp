@@ -7,7 +7,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CasaLock extends Casa {
-	
+
 	private ReentrantLock l = new ReentrantLock(); //Il lock per sincronizzare tutti i thread
 	private Condition aspettaTurnoCemento = l.newCondition(); //Condizione su cui farò dormire chi aspetta il turno cemento
 	private Condition aspettaTurnoMattoni = l.newCondition(); //Condizione su cui farò dormire chi aspetta il turno mattoni
@@ -15,13 +15,13 @@ public class CasaLock extends Casa {
 	private boolean serveCemento = true;
 	private boolean serveMattone = false;
 	//code in cui inserisco i thread
-	private Queue<Thread> codaCemento = new LinkedList<Thread>();
-	private Queue<Thread> codaMattoni = new LinkedList<Thread>();
+	private Queue<Thread> codaCemento = new LinkedList<>();
+	private Queue<Thread> codaMattoni = new LinkedList<>();
 	private boolean svuotaCode = false;
 	//Contatori per l'arresto delle lavorazioni
 	private int contaStrato = 0;
 	private int contaPareti = 0;
-	
+
 	public CasaLock(int nStratiPareti, int pareti, int poggiaMattoni, int spargiCemento) {
 		super(nStratiPareti, pareti, poggiaMattoni, spargiCemento);
 	}//Costruttore
@@ -108,7 +108,7 @@ public class CasaLock extends Casa {
 				codaMattoni.remove(corrente);
 				serveCemento = true;
 				if (contaPareti >= super.nPareti ){
-					//Altrimenti continuerranno a dormire per via del ciclo while nella condition 
+					//Altrimenti continuerranno a dormire per via del ciclo while nella condition
 					serveMattone = true;
 					//Devo liberare tutti i thread che attendono nelle code
 					svuotaCode = true;

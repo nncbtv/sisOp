@@ -1,10 +1,10 @@
 package sisOp.CodiciEsercitazioni.Esercitazione_5_BarbiereAddormentato;
 
 public class Cliente extends Thread {
-	
+
 	private Sala sala; //Sala in cui trovo il barbiere
 	private int id; //Numero di arrivo
-	
+
 	public Cliente ( Sala s, int i) {
 		this.sala = s;
 		this.id = i;
@@ -24,11 +24,12 @@ public class Cliente extends Thread {
 			System.out.println("Errore nel cliente");
 		}
 	}//run
-	
+
+	@Override
 	public String toString() {
 		return "Cliente: "+id;
 	}
-	
+
 	public int getID() {return id;}
 
 }//Cliente

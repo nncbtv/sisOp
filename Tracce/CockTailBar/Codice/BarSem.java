@@ -4,14 +4,14 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class BarSem extends Bar {
-	
+
 	private Semaphore aspettaOrdinazioni = new Semaphore(0); //Il barista attende le comande di tutti i clienti prima di iniziare
 	private Semaphore aspettaBarista = new Semaphore(0); //Quando devo attendere il cocktail dal barista
 	private Semaphore mutex = new Semaphore(1); //Semaforo per dare le comande uno alla volta
 	private Semaphore pagaCassa = new Semaphore(1, true); //Per pagare alla cassa con ordine FIFO
 	private int nCocktailNormali = 0; //Per capire quante ordinazioni sono state fatte di questo tipo
 	private int nCocktailSpeciali = 0;
-	
+
 	public BarSem(int numeroClienti) {
 		super(numeroClienti); //Rimando il numero di clienti all'oggetto condiviso astratto
 	}//costruttore
@@ -23,8 +23,12 @@ public class BarSem extends Bar {
 			mutex.acquire(); //Prendo il mutex per passare la comanda al barista
 			Thread clienteCorrente = Thread.currentThread(); //Prendo il thread che è davanti al bancone
 			System.out.println(clienteCorrente.getName()+" sta passando l'ordinazione al barista"); //Stampa a video per debug
-			if ( tipo == 0 ) nCocktailNormali += 1; //Se voglio un coktail normale incremento il contaore
-			if ( tipo == 1 ) nCocktailSpeciali += 1;
+			if ( tipo == 0 ) {
+				nCocktailNormali += 1; //Se voglio un coktail normale incremento il contaore
+			}
+			if ( tipo == 1 ) {
+				nCocktailSpeciali += 1;
+			}
 			aspettaOrdinazioni.release(); //Faccio una release sul semaforo per indicare che la mia ordinazione è stata presa
 			mutex.release(); //Faccio ordinare al prossimo della comitiva
 		} catch (Exception e) {
@@ -67,8 +71,12 @@ public class BarSem extends Bar {
 			System.out.println(clienteCorrente.getName()+" si sta dirigendo alla cassa"); //Stampa a video per debug
 			pagaCassa.acquire(); //Prendoi il semaforo per pagare, esso gestisce la coda in ordine FIFO
 			mutex.acquire(); //Prendo il mutex per aggiornare l'incasso
-			if ( tipo == 0 ) super.incassoFinale += 6; //Pago 6 denari
-			if ( tipo == 1 ) super.incassoFinale += 8; //Pago 8 denari
+			if ( tipo == 0 ) {
+				super.incassoFinale += 6; //Pago 6 denari
+			}
+			if ( tipo == 1 ) {
+				super.incassoFinale += 8; //Pago 8 denari
+			}
 			System.out.println(clienteCorrente.getName()+" ha pagato"); //Stampa a video per debug
 			aspettaOrdinazioni.release(); //Riutilizzo il semaforo per capire quando tutti i clienti hanno pagato
 			mutex.release(); //Rilascio il mutex

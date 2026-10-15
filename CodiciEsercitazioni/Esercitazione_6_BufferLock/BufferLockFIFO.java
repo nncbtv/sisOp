@@ -10,10 +10,10 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 	//Liste in cui addormento i thread
 	protected LinkedList<Thread> codaProduttori = new LinkedList<>();
 	protected LinkedList<Thread> codaConsumatori = new LinkedList<>();
-	
+
 	public BufferLockFIFO(int dimensione) {
 		super(dimensione);
-		// TODO Auto-generated constructor stub
+
 	}//Costruttore
 
 	@Override
@@ -39,7 +39,7 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 		//Controllo se posso mettere ancora elementi senza sforare e se sono il primo thread in coda
 		return nElementi<buffer.length && Thread.currentThread().equals(codaProduttori.getFirst());
 	}//possoInserire
-	
+
 	@Override
 	public int get() throws InterruptedException {
 		int i;
@@ -60,7 +60,7 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 		}
 		return i;
 	}//get
-	
+
 	private boolean possoTogliere() {
 		//Controllo se posso mettere ancora elementi senza sforare e se sono il primo thread in coda
 		return nElementi>0 && Thread.currentThread().equals(codaConsumatori.getFirst());

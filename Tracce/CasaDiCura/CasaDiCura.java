@@ -1,10 +1,10 @@
 package sisOp.Tracce.CasaDiCura;
 
 public abstract class CasaDiCura {
-	
+
 	protected int nPazienti;
 	protected int pazientiServiti = 0; //Pazienti Serviti dal medico
-	
+
 	public CasaDiCura(int numeroPazienti) {
 		this.nPazienti = numeroPazienti;
 	}//Costruttore
@@ -13,7 +13,7 @@ public abstract class CasaDiCura {
 	abstract void fineOperazione();
 	abstract void pazienteEntra();
 	abstract void pazienteEsci();
-	
+
 	public void test() throws InterruptedException {
 		Thread [] pazienti = new Thread[nPazienti]; //Creo l'insieme dei pazienti
 		Medico gianni = new Medico(this); //Creo il medico della clinica
@@ -28,5 +28,5 @@ public abstract class CasaDiCura {
 		gianni.join();
 		System.out.println("I pazienti sono stati visitati tutti!");
 	}//test
-	
+
 }//CasaDiCura

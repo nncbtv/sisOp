@@ -5,7 +5,7 @@ import java.util.concurrent.Semaphore;
 public class Esercizio3 {
 
 	private static Semaphore[] sems;
-	
+
 	public static void main(String[] args) {
 		int n = 10;
 		sems = new Semaphore[n];
@@ -18,13 +18,13 @@ public class Esercizio3 {
 			threads[i].start();
 		}
 	}//main
-	
+
 	static class MyThread extends Thread{
 		private int i, n;
 		public MyThread(int i, int n) {
 			this.i = i; this.n = n;
 		}//Costruttore
-		
+
 		@Override
 		public void run() {
 			try {
@@ -39,7 +39,7 @@ public class Esercizio3 {
 			}
 		}//run
 	}//MyThread
-	
+
 }//Esercizio3
 
 /*

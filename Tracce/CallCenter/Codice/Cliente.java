@@ -8,15 +8,15 @@ public class Cliente extends Thread {
 		this.c = x;
 		this.codiceTicket = codiceCliente;
 	}//Costruttore
-	
+
 	@Override
 	public void run() {
 		c.richiediAssistenza();
 		c.terminaChiamata();
 	}//run
-	
+
 	public int getCodiceCliente() {
 		return codiceTicket;
 	}//getCodiceTicket
-	
+
 }//Cliente

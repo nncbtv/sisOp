@@ -7,12 +7,13 @@ public class Operaio extends Thread {
 	int tipoOperaio; //0 traverse, 1 rotaie
 	CantiereFerroviarioA cantiere;
 	public boolean turnoLavoro = true; //Continuo a lavorare finché non abbiamo costruito tutti i binari
-	
+
 	public Operaio(int tipo, CantiereFerroviarioA c) {
 		this.tipoOperaio = tipo;
 		this.cantiere = c;
 	}//Costruttore
-	
+
+	@Override
 	public void run() {
 		try {
 			while (turnoLavoro) {

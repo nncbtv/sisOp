@@ -1,7 +1,7 @@
 package sisOp.Tracce.Muratori;
 
 public abstract class Casa {
-	
+
 	protected int nStratiParete; //Strati da posizionare per finire una parete
 	protected int poggiaMattoni; //Numero di muratori che poggeranno i mattoni
 	protected int spargiCemento; //Numero di muratori che spargono il cemento
@@ -13,10 +13,10 @@ public abstract class Casa {
 		this.poggiaMattoni = mattoni;
 		this.spargiCemento = cemento;
 	}//Costruttore
-	
+
 	abstract boolean inizia(int operazione); //Decide se deve essere svolto il lavoro di tipo T oppure no
 	abstract void termina(int operazione); //Comunica al capocantiere che ha finito l'operazione
-	
+
 	public void test() throws InterruptedException {
 		System.out.println("Per costruire la casa: ");
 		System.out.println("Pareti: "+nPareti);
@@ -41,5 +41,5 @@ public abstract class Casa {
 		}//Attendo che i cementatori rientrino :)
 		System.out.println("\nI muratori sono riusciti ad alzare le pareti");
 	}//test della classe
-	
+
 }//Casa

@@ -1,7 +1,7 @@
 package sisOp.CodiciEsercitazioni.Esercitazione_6_3;
 
 public abstract class CodaThread {
-	
+
 	private int n;
 	private Printer[] lp;
 	//Metodo che i thread devono svolgere a turno ordinato, qui salutano, dal primo creato all'ultimo

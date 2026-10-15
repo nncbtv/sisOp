@@ -3,9 +3,9 @@ package sisOp.Tracce.Funivia.Codici;
 import java.util.concurrent.TimeUnit;
 
 public class Pilota extends Thread{
-	
+
 	private Funivia f;
-	
+
 	public Pilota(Funivia funivia) {
 		this.f = funivia;
 	}
@@ -23,5 +23,5 @@ public class Pilota extends Thread{
 			System.out.println("Il pilota è stato interrotto");
 		}
 	}//run
-	
+
 }//Pilota

@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 public class FuniviaSempahore extends Funivia {
-	
+
 	private Semaphore salitaPersone;
 	private Semaphore salitaCiclisti;
 	private Semaphore mutex;
@@ -14,7 +14,7 @@ public class FuniviaSempahore extends Funivia {
 	private Semaphore fineCorsa;
 	private Semaphore ritornoFunivia;
 	private boolean corsaPedoni = true; //Inizio la prima corsa con i pedoni
-	
+
 	public FuniviaSempahore(int pedoni, int ciclisti) {
 		super(pedoni, ciclisti); //Passo sopra per poter inizializzare il tutto
 		salitaPersone = new Semaphore(0, true); //possono salire 6 persone
@@ -32,9 +32,9 @@ public class FuniviaSempahore extends Funivia {
 		try {
 			System.out.println("Attendo che i passeggeri salgano");
 			if ( corsaPedoni ) { //Informo che si sono liberati posti sulla funivia, faccio direttamente così perché tanto non ho un altra corsa o altro thread pilota
-				salitaPersone.release(6);	
+				salitaPersone.release(6);
 			}else {
-				salitaCiclisti.release(3);	
+				salitaCiclisti.release(3);
 			}
 			//Devo attendere che tutti salgano sulla funivia e appena è piena blocco la salita e parto
 			partenzaFunivia.acquire((corsaPedoni)?6:3); //Sono i posti presenti sulla funivia, in base al tipo di corsa
@@ -56,7 +56,7 @@ public class FuniviaSempahore extends Funivia {
 			fineCorsa.release((corsaPedoni)?6:3); //Sveglio i thread sui sedili della funivia e gli dico che possono scendere
 			ritornoFunivia.acquire((corsaPedoni)?6:3); //Aspetto che i posti sulla funivia siano liberi
 			System.out.print("Sono scesi tutti, ho trasportato: ");
-			
+
 			if (corsaPedoni) {
 				System.out.println("pedoni");
 			}else {
@@ -64,7 +64,7 @@ public class FuniviaSempahore extends Funivia {
 			}
 			super.personeValle = super.personeValle - ((corsaPedoni)?6:3); //Aggiorno il contatore per le persone a valle altrimenti giro inutilmente
 			corsaPedoni = !corsaPedoni; //Cambio tipo di corsa
-			
+
 		}catch (Exception e) {
 			System.out.println("Errore nella discesa passeggeri a monte");
 		}

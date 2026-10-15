@@ -6,24 +6,24 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BarModLock extends BarMod {
-	
+
 	//Lock e condizioni su cui far attendere i thread
 	private ReentrantLock cassa;
 	private Condition aspettaCassa;
 	private ReentrantLock bancone;
 	private Condition aspettaBancone;
-	
+
 	//Code per ogni sezione
 	private Queue<Thread> codaCassa;
 	private Queue<Thread> codaBancone;
 	private int postiBancone = 4; //Mi serve per far passare 4 thread alla volta dalla coda al bancone fino a sedersi
-	
+
 	public BarModLock() {
 		cassa = new ReentrantLock();
 		aspettaCassa = cassa.newCondition();
 		bancone = new ReentrantLock();
 		aspettaBancone = bancone.newCondition();
-		
+
 		codaCassa = new LinkedList<>();
 		codaBancone = new LinkedList<>();
 	}//costruttore
@@ -31,9 +31,12 @@ public class BarModLock extends BarMod {
 	@Override
 	public int scegli() {
 		//Controllo a quale fila conviene mettermi in coda
-		if ( codaCassa.size() == 0 ) return 1;
-		if ( codaBancone.size() == 0 && postiBancone > 0) return 2;
-		if ( codaBancone.size() < codaCassa.size() ) return 2;
+		if ( codaCassa.size() == 0 ) {
+			return 1;
+		}
+		if ( (codaBancone.size() == 0 && postiBancone > 0) || (codaBancone.size() < codaCassa.size()) ) {
+			return 2;
+		}
 		return 1;
 		/*
 		 * Metodo che fa un piccola stima, ovviemente qui c'é race condition poiche un Thread può aggiungersi in coda mentre controllo,
@@ -47,7 +50,7 @@ public class BarModLock extends BarMod {
 		if (i == 1) {//Sono in coda alla cassa
 			cassa.lock();
 			try {
-				//Preso il lock devo mettermi in coda 
+				//Preso il lock devo mettermi in coda
 				Thread corrente = Thread.currentThread();
 				codaCassa.add(corrente); //Mi metto in coda alla cassa
 				while ( !codaCassa.peek().equals(corrente) ) {
@@ -63,7 +66,7 @@ public class BarModLock extends BarMod {
 		}else { //Sono in coda al bancone
 			bancone.lock();
 			try {
-				//Preso il lock devo mettermi in coda 
+				//Preso il lock devo mettermi in coda
 				Thread corrente = Thread.currentThread();
 				codaBancone.add(corrente); //Mi metto in coda alla cassa
 				while ( !codaBancone.peek().equals(corrente) || postiBancone == 0 ) {

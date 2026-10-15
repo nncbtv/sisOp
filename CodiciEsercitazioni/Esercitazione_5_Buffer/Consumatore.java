@@ -5,11 +5,11 @@ import java.util.concurrent.TimeUnit;
 public class Consumatore implements Runnable {
 
 	private Buffer buffer;
-	
+
 	public Consumatore (Buffer b) {
 		this.buffer = b;
 	}//Costruttore
-	
+
 	@Override
 	public void run() {
 		try {
@@ -21,7 +21,7 @@ public class Consumatore implements Runnable {
 			System.out.println("Errore nel consumatore");
 		}
 	}//run
-	
+
 	private void consuma(int i ) throws InterruptedException {
 		TimeUnit.SECONDS.sleep(i); //Mi addormento quando basta per consumare il prodotto
 	}

@@ -4,10 +4,10 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class ClientiBar implements Runnable {
-	
+
 	BarMod baretto;
 	Random r;
-	
+
 	public ClientiBar(BarMod bar) {
 		this.baretto = bar; //Prendo il bar che mi passano per poi usarlo
 		this.r = new Random();
@@ -28,7 +28,7 @@ public class ClientiBar implements Runnable {
 			System.out.println("Il cliente non è riuscito ad interagire con il bar"+e.toString());
 		}
 	}//run
-	
+
 	private void eseguiOperazione(int operazione) {
 		if ( operazione == 1 ) {
 			int pagamento = r.nextInt(5,11); //Simulo il pagamento con [5,11) secondi di sleep

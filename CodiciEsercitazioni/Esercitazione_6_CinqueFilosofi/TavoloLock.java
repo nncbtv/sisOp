@@ -5,10 +5,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TavoloLock extends Tavolo{
-	
+
 	protected Lock l = new ReentrantLock();
 	protected Condition[] aspettoBacchetta = new Condition[getFilosofi()];
-	
+
 	public TavoloLock() {
 		for ( int i=0; i<getFilosofi(); i++) {
 			//Collego le condition al lucchetto
@@ -21,12 +21,13 @@ public class TavoloLock extends Tavolo{
 		l.lock();
 		try {
 			//Finche le bacchette sono occupate aspetto
-			while ( bacchette[i] == true || bacchette[(i+1)%getFilosofi()] == true ) { 
+			while ( bacchette[i] || bacchette[(i+1)%getFilosofi()] ) {
 				//Siccome non so quale è occupata di bacchetta controllo
-				if ( bacchette[i] ) //Aspetto sulla bacchetta alla mia dx, la sx l'ho presa
+				if ( bacchette[i] ) { //Aspetto sulla bacchetta alla mia dx, la sx l'ho presa
 					aspettoBacchetta[i].await();
-				else //Aspetto sulla bacchetta alla mia sx, la dx l'ho presa
+				} else { //Aspetto sulla bacchetta alla mia sx, la dx l'ho presa
 					aspettoBacchetta[(i+1)%getFilosofi()].await();
+				}
 			}
 			//Mi impossesso delle bacchette se sono stato svegliato
 			//Chi sta pensando me ne ha lasciato due

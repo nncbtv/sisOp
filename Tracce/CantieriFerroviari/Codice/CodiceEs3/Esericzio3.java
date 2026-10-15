@@ -1,7 +1,7 @@
 package sisOp.Tracce.CantieriFerroviari.Codice.CodiceEs3;
 
 public class Esericzio3 {
-	
+
 	public static void main(String[] args) {
 		BW t1 = new BW(true);
 		t1.start();
@@ -16,6 +16,7 @@ public class Esericzio3 {
 		public BW(boolean bw) {
 			busy_waiting = bw;
 		}//Costruttore della classe
+		@Override
 		public void run() {
 			do {
 				try {
@@ -32,7 +33,7 @@ public class Esericzio3 {
  * Punto i) FUNZIONAMENTO
  * Il nostro main istanzia una classe del tipo BW che estende thread e imposta una sua variabile di istanza a True.
  * Dopo averlo avviato mette in s0 il suo stato e in s1 lo stato del thread lanciato prima, quest'ultimo dipende dallo scheduling della CPU.
- * Esegue una stampa mostrando gli stati dei due thread, dopodiché prova ad assegnare alla varibile di istanza di t1 
+ * Esegue una stampa mostrando gli stati dei due thread, dopodiché prova ad assegnare alla varibile di istanza di t1
  * il risultato booleano di un confronto tra i due stati.
  * La classe BW invece cicla costantemente l'operazioni di sleep finché la variabile busy_wainting è true, dopodiché se la variabile viene posta a false,
  * stampa sisop-corsoB

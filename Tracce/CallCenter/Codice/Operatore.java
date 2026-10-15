@@ -9,18 +9,20 @@ public class Operatore extends Thread {
 	private CallCenter c;
 	public boolean stop = false;
 	public int codiceTicket = -1;
-	
+
 	public Operatore(CallCenter vodafone, int nOperatore) {
 		this.c = vodafone;
 		this.nOperatore = nOperatore;
 	}//Costruttore
-	
+
 	@Override
 	public void run() {
 		try {
 			while ( true ) {
 				c.fornisciAssistenza(); //Fornisco Assistenza al cliente
-				if ( stop ) return; //Se durante la ricerca di clienti non trovo nulla termino
+				if ( stop ) {
+					return; //Se durante la ricerca di clienti non trovo nulla termino
+				}
 				c.prossimoCliente(); //Passa al prossimo cliente
 				clientiServiti +=1; //Incremento il mio contatore dei clienti serviti
 				if ( clientiServiti%15 == 0 ) {
@@ -32,11 +34,11 @@ public class Operatore extends Thread {
 			e.printStackTrace();
 		}
 	}//run
-	
+
 	public int getNoperatore() {
 		return nOperatore;
 	}//getNoperatore
-	
+
 	public int getClientiServiti() {
 		return clientiServiti;
 	}//getClientiServiti

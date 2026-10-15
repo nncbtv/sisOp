@@ -19,7 +19,7 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 	//Mutua esclusione per aggiornare lo stato del binario e trattare i dati condivisi
 	Semaphore mutex = new Semaphore(1);
 
-	Map<Thread, Integer> sceltaBinari = new HashMap<Thread, Integer>(); //Per associare un thread ad un binario da lui scelto
+	Map<Thread, Integer> sceltaBinari = new HashMap<>(); //Per associare un thread ad un binario da lui scelto
 
 	public CantiereFerroviarioSem(int binariDaCostruire, int lb, int operaiT, int operaiR) {
 		super(binariDaCostruire, lb, operaiT, operaiR); //Riporto i dati alla classe astratta
@@ -48,10 +48,10 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 					attenditurnoRotaia.release(super.N_OPERAI_ROTAIE);
 					attendiTurnoTraversa.release(super.N_OPERAI_TRAVERSE);
 					return;
-				} 
+				}
 				for ( int i = 0; i<super.binariInCostruzione; i++ ) { //Comincio a scorrere tutti i binari
 					if ( t == 0 ) { //Se sono un operaio delle traverse controllo se serve una traversa
-						if ( serveTraversa[i] == true && !(binarioOccupato[i]) ) { //Il binario deve chiedere una traversa e deve essere libero
+						if ( serveTraversa[i] && !(binarioOccupato[i]) ) { //Il binario deve chiedere una traversa e deve essere libero
 							if ( traversePosizionate[i] == super.N_TRAVERSE ){ //Significa che in questo binario non devo continuare a costruire
 								continue; //Passo al prossimo binario
 							}
@@ -62,7 +62,7 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 						}
 					}
 					if ( t == 1 ) {//Se sono un operaio delle rotaie controllo se serve una rotaia
-						if ( serveTraversa[i] == false && !(binarioOccupato[i]) ) { //Il binario deve chiedere una traversa e deve essere libero
+						if ( !serveTraversa[i] && !(binarioOccupato[i]) ) { //Il binario deve chiedere una traversa e deve essere libero
 							binarioScelto = i; //Prendo il binario a cui serve la rotaia
 							serveTraversa[i] = true; //Dopo aver posizionato la rotaia necessito della traversa, aggiorno il flag
 							binarioOccupato[i] = true; //Occupo il binario, aggiorno il flag
@@ -89,10 +89,12 @@ public class CantiereFerroviarioSem extends CantiereFerroviarioA {
 				}
 			}//Fine scelta binario
 			//Una volta scelto il binario svolgo il lavoro
-			if ( t == 0 )
+			if ( t == 0 ) {
 				System.out.println(Thread.currentThread().getName()+" Sta posizionando una traversa su binario "+binarioScelto);
-			if ( t == 1 )
+			}
+			if ( t == 1 ) {
 				System.out.println(Thread.currentThread().getName()+" Sta posizionando una rotaia su binario "+binarioScelto);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

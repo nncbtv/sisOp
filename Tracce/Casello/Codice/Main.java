@@ -7,5 +7,5 @@ public class Main {
 		CaselloAutostradaleSemaphore casello = new CaselloAutostradaleSemaphore();
 		casello.test(numeroAutomobilisti);
 	}//main
-	
+
 }//Main

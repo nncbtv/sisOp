@@ -10,13 +10,13 @@ public class MemoriaCondivisaLock extends MemoriaCondivisa {
 	/*
 	 * Tanti lettori leggono dalla memoria ma solo uno scrittore alla volta può scriverci
 	 */
-	
+
 	private int nLettori = 0; //Numero di lettori presenti in memoria
 	private boolean scrittoreScrive = false; //Per ciclare la wait sulla condition
 	private Lock l = new ReentrantLock();
 	private Condition possoScrivere = l.newCondition();
 	private Condition possoLeggere = l.newCondition();
-	
+
 	@Override
 	public void inizioScrittura() throws InterruptedException {
 		l.lock();
@@ -62,7 +62,9 @@ public class MemoriaCondivisaLock extends MemoriaCondivisa {
 		l.lock();
 		try {
 			nLettori--;
-			if (nLettori == 0) possoScrivere.signal(); //Mando il segnale nella coda di attesa per scrivere
+			if (nLettori == 0) {
+				possoScrivere.signal(); //Mando il segnale nella coda di attesa per scrivere
+			}
 		}finally {
 			l.unlock();
 		}

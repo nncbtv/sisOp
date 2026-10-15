@@ -3,25 +3,26 @@ package sisOp.Tracce.BarMod.Codice;
 import java.util.concurrent.Semaphore;
 
 public class BarModSemaphore extends BarMod {
-	
+
 	//Appena arrivo e non ce nessuno in cassa prima passo in cassa
 	//Se il bancone è libero vado prima a bere il caffé e poi in cassa
 	//Se nessuno è libero mi accodo nella più corta preferendo la cassa se sono di uguale dimensione
-	
+
 	private Semaphore codaCassa; //Uso i semafori per gestire le code dei thread, il semaforo stesso si occupera di garantire mutua esclusione
-	private Semaphore codaBancone; 
-	
+	private Semaphore codaBancone;
+
 	public BarModSemaphore() {
 		codaCassa = new Semaphore(1, true); //Alla cassa si paga uno alla volta e in ordine FIFO
 		codaBancone = new Semaphore(4, true); //Ovviamente anche qui siccome siamo in una società utopica stiamo in coda FIFO
 	}//Costruttore
-	
+
 	@Override
 	public int scegli() {
 		//Con 1 paghi con 2 consumi al bancone
-		if ( codaCassa.availablePermits() > 0 ) return 1; //Se la cassa è libera prima pago
-		if ( codaBancone.availablePermits() > 0 ) return 2; //Passo dal bancone libero se la cassa è occupata, arrivo a questo if se il primo è falso
-		if ( codaCassa.getQueueLength() > codaBancone.getQueueLength() ) {
+		if ( codaCassa.availablePermits() > 0 ) {
+			return 1; //Se la cassa è libera prima pago
+		}
+		if ( (codaBancone.availablePermits() > 0) || (codaCassa.getQueueLength() > codaBancone.getQueueLength()) ) {
 			return 2; //La coda del bancone è più corta quindi mi accodo li
 		}
 		return 1; //Se le code sono uguali oppure la coda cassa è più corta vado in cassa

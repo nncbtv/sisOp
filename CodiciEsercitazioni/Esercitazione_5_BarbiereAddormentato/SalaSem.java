@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 public class SalaSem extends Sala {
 	private Semaphore mutex = new Semaphore(1);
-	private Semaphore clientiSeduti = new Semaphore(0, true);;
+	private Semaphore clientiSeduti = new Semaphore(0, true);
 	private Semaphore poltrona = new Semaphore(0, true);
-	
+
 	public SalaSem(int posti) {
 		super(posti);
 	}//Costruttore per la  sala

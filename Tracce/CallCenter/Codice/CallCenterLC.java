@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CallCenterLC extends CallCenter {
-	private Queue<Integer> codaFuoriCentralino = new LinkedList<Integer>(); //Coda di attesa FIFO
+	private Queue<Integer> codaFuoriCentralino = new LinkedList<>(); //Coda di attesa FIFO
 	private ReentrantLock l = new ReentrantLock();
 	private Condition entrataCentralino = l.newCondition();
 	private Condition [] gestioneTicket = new Condition[super.numeroClienti]; //Ticket su cui far dormire a turno i due interlocutori
@@ -16,7 +16,7 @@ public class CallCenterLC extends CallCenter {
 	private boolean [] attendiCliente = new boolean[super.numeroClienti]; //Perché poi ogni thread operatore deve aspettare il suo cliente
 	private boolean [] attendiOperatore = new boolean[super.numeroClienti]; //Perché ogni thread cliente deve aspettare il suo operatore
 	private boolean [] problemaRisolto = new boolean[super.numeroClienti]; //Variante Traccia 4b, mi serve per riproporre soluzioni
-	
+
 	private Random r = new Random();
 
 	public CallCenterLC(int N, int M) {

@@ -1,9 +1,9 @@
 package sisOp.Tracce.CasaDiCura;
 
 public class Paziente implements Runnable {
-	
+
 	private CasaDiCura c; //Casa di cura a cui mi presento
-	
+
 	public Paziente(CasaDiCura cIn) {
 		this.c = cIn;
 	}//Costruttore

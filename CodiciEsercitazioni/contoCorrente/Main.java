@@ -18,9 +18,12 @@ public class Main {
 		//Chiamata ad una funzione che simula i correntisti e le operazioni con thread
 		testCorrentisti(postaPay, numCorrentisti, numOperazioni, importo);
 		//Vado a controllare se è tutto correto
-		if (postaPay.getSaldo() == saldoIniziale ) System.out.println("Saldo finale: "+postaPay.getSaldo()+"\nTutte le operazioni sono state svolte in modo corretto!");
-		else System.out.println("Errore nelle operazioni!!");
-		
+		if (postaPay.getSaldo() == saldoIniziale ) {
+			System.out.println("Saldo finale: "+postaPay.getSaldo()+"\nTutte le operazioni sono state svolte in modo corretto!");
+		} else {
+			System.out.println("Errore nelle operazioni!!");
+		}
+
 	}//main
 	//Qui parto con la funzione che sovlge tutti i test
 	private static void testCorrentisti(ContoCorrente cc, int nCorrentisti, int nOperazioni, int importo) throws InterruptedException {
@@ -29,7 +32,7 @@ public class Main {
 		for ( int i = 0; i<nCorrentisti; i++ ) {//Istanzio ogni classe nekk'array
 			alberto[i] = new Correntista(cc, importo, nOperazioni); //Tutti hanno lo stesso conto corrente con le stesse operazioni
 		}
-		
+
 		//Trasformo i correntisti in un array di Thread
 		Thread correntisti [] = new Thread[nCorrentisti];
 		for ( int i = 0; i<nCorrentisti; i++ ) {//Assegno ogni correntista ad un Thread

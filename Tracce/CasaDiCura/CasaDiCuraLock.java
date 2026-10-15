@@ -8,7 +8,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CasaDiCuraLock extends CasaDiCura {
-	
+
 	private ReentrantLock l; //Questo lock mi rappresenta la gestione della casa di cura
 	private Condition attendiPaziente; //Questa condizione mi permette di far attendere il paziente al medico
 	private boolean pazienteEntrato = false; //Mi serve per capire se la sala visite è occupata
@@ -19,8 +19,8 @@ public class CasaDiCuraLock extends CasaDiCura {
 	private Condition attendiOperzione; //I pazienti aspettano che il medico finisca di visitarli
 	private Queue<Thread> codaVisite; //Devo gestire una coda FIFO per l'entrata nella sala delle visite
 	private Random r = new Random(); //Mi serve per generare le attese
-	
-	
+
+
 	public CasaDiCuraLock(int nPazienti) {
 		super(nPazienti); //Rimando al costruttore della superclasse
 		l = new ReentrantLock(); //Inizializzo il lucchetto
@@ -75,7 +75,7 @@ public class CasaDiCuraLock extends CasaDiCura {
 		//In questo punto il cliente deve poter accodarsi prima di tutto in sala di attesa e poi nella coda delle operazioni
 		l.lock(); //Prendo il lucchetto per capire cosa devo fare
 		try {
-			while ( personeInSala > 2 ) { //Se più di 3 persone sono in sala di attesa mi fermo 
+			while ( personeInSala > 2 ) { //Se più di 3 persone sono in sala di attesa mi fermo
 				attendiSalaAttesa.await();
 			}
 			//Entro nella sala di attesa
@@ -90,7 +90,7 @@ public class CasaDiCuraLock extends CasaDiCura {
 			pazienteEntrato = true; //Entro in sala
 			operazioneInCorso = true; //Perché mi sta operando
 			System.out.println("Il paziente: "+Thread.currentThread().getName()+ " è entrato in sala visite");
-			attendiPaziente.signalAll(); //Sveglio il medico 
+			attendiPaziente.signalAll(); //Sveglio il medico
 		} catch (InterruptedException e) {
 			System.out.println("Errore nelll'inserimento coda");
 		}finally {
@@ -104,13 +104,14 @@ public class CasaDiCuraLock extends CasaDiCura {
 		//Devo uscire dalla coda e fa passare avanti un altra persona
 		l.lock();
 		try {
-			while (operazioneInCorso) //Finchè il medico mi sta visitando devo attendere
+			while (operazioneInCorso) { //Finchè il medico mi sta visitando devo attendere
 				attendiOperzione.await();
+			}
 			codaVisite.remove(Thread.currentThread()); //Esco dalla coda per far passare il prossimo in sala visite appena la sala è libera
 			pazienteEntrato = false; //La  sala delle visite non ha pazienti al suo interno
 			attendiSalaVisite.signalAll(); //Segnalo la mia uscita agli altri dietro di me
 			personeInSala= personeInSala - 1; //Indico che c'è un posto in più nella sala di attesa perché un altro è entrato in sala visite
-			attendiSalaAttesa.signalAll(); //Segnalo il posto a chi è fuori dalla 
+			attendiSalaAttesa.signalAll(); //Segnalo il posto a chi è fuori dalla
 			System.out.println("Il paziente: "+Thread.currentThread().getName()+ " è uscito dalla sala visite");
 		}catch (Exception e) {
 			System.out.println("Errore nell'uscita dalla visita");

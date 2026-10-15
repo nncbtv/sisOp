@@ -1,6 +1,5 @@
 package sisOp.CodiciEsercitazioni.Esercitazione_5_Buffer;
 
-import sisOp.CodiciEsercitazioni.Esercitazione_6_BufferLock.BufferLock;
 import sisOp.CodiciEsercitazioni.Esercitazione_6_BufferLock.BufferLockFIFO;
 
 public class TestBuffer {
@@ -14,5 +13,5 @@ public class TestBuffer {
 		int nConsumatori = 10;
 		b.test(nProduttori, nConsumatori);
 	}//main
-	
+
 }//TestBuffer

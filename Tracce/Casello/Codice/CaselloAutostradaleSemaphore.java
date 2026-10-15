@@ -5,7 +5,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class CaselloAutostradaleSemaphore extends CaselloAutostradale {
-	
+
 	private Semaphore [] porteCasello = new Semaphore[super.nPorte]; //Più porte ma solo un automobilista per ognuna di esse
 	private Semaphore mutex = new Semaphore(1); //Semaforo per la mutua esclusione sulla variabile incasso
 
@@ -14,7 +14,7 @@ public class CaselloAutostradaleSemaphore extends CaselloAutostradale {
 			porteCasello[i] = new Semaphore(1, true); //Ogni porta deve gestire la sua coda col FIFO, 1 automobile per volta
 		}
 	}//Costruttore
-	
+
 	@Override
 	public void accodamento(int p) {
 		//Provo ad accodarmi in fila sulla porta p
