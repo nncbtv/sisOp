@@ -20,6 +20,7 @@ public class AziendaAgricolaSemaphore extends AziendaAgricola{
 	@Override
 	void pagaSacchetti(int nSacchetti) throws InterruptedException {
 		try {
+			//CodaCassa è unario quindi implicitamente mi garantisce anche la mutua esclusione
 			codaCassa.acquire(); //Cerco di essere il primo dell coda
 			super.saldoFinale = super.saldoFinale + (nSacchetti*super.costoSacco); //Pago
 			TimeUnit.SECONDS.sleep(2); //Simulo il pagamento
