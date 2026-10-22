@@ -1,0 +1,16 @@
+Spiegare, anche attraverso schemi e disegni, il funzionamento della MMU nella realizzazione del mapping di indirizzi 
+	-(MMU & Indirizzi)
+Si descriva, anche mediante una figura opportunamente commentata, le caratteristiche e il funzionamento dell'allocazione indicizzata dei file da parte del file system.
+	-(Allocazione file File System)
+Spiegare, anche attraverso schemi e disegni, la differenza tra frammentazione interna e frammentazione esterna nella gestione della memoria centrale.
+	-(Frammentazione memoria centrale)
+Si descriva, anche con l'aiuto di frammenti di codice opportunamente commentati, come si effettua la creazione e l'esecuzione di processi utilizzando le system call di Unix
+	-(Sistem call Unix)
+Descrivere brevemente, anche tramite schemi grafici, le tecniche di implementazione e di gestione delle directory nel file System
+	-(File System directory)
+Si descriva, anche mediante figure opportunamente commentate, il funzionamento di un algoritmo di scheduling della CPU a code multiple con feedback.
+	-(Scheduling CPU)
+Si descriva, anche mediante schemi opportunamente commentati, il funzionamento dello schema allocazione concatenata dei blocchi dei file di un File System, evidenziando le principali differenze rispetto agli altri metodi di allocazione.
+	-(File System allocazione)
+Descrivere brevemente, anche tramite un semplice esempio, il funzionamento della file allocation table (FAT).
+	-(File System allocazione)
