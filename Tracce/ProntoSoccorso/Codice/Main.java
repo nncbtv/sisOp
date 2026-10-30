@@ -5,7 +5,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		final int N_PAZIENTI = 30;
 		Thread [] pazienti = new Thread[N_PAZIENTI];
-		ProntoSoccorso spitale = new ProntoSoccorsoLC(N_PAZIENTI);
+		ProntoSoccorso spitale = new ProntoSoccorsoLC4B(N_PAZIENTI);
 		Medico [] m = new Medico[2];
 		for ( int i = 0; i<N_PAZIENTI; i++ ) {
 			pazienti[i] = new Paziente(spitale, (i%3));
