@@ -43,6 +43,6 @@ public class Esercizio1 {
 	public static void main(String[] args) {
 		new A().start();
 		new B().start();
-	}//main
+	}//Main
 
 }//Esercizio1

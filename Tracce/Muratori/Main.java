@@ -9,6 +9,6 @@ public class Main {
 		int posaCemento = 7;
 		Casa porcellino = new CasaLock(stratoParete, nPareti, poggiaMattoni, posaCemento);
 		porcellino.test();
-	}//main
+	}//Main
 
 }//Main

@@ -28,6 +28,6 @@ public class Main {
 			rec[i].join();
 		}
 		System.out.println("Abbiamo Servito tutti l'hotel è chiuso, il receptionist si è congedato");
-	}//main
+	}//Main
 
 }//Main

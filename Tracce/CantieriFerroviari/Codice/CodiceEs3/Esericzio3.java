@@ -9,7 +9,7 @@ public class Esericzio3 {
 		Thread.State s1 = t1.getState();
 		System.out.println("State 0: "+s0+"; "+"State 1: "+s1);
 		t1.busy_waiting = s0.equals(s1);
-	}//main
+	}//Main
 
 	static class BW extends Thread{
 		public boolean busy_waiting;
@@ -28,10 +28,10 @@ public class Esericzio3 {
 			System.out.println("sisop-corsoB");
 		}//run
 	}//BW
-}//Esercizio3
+}//Main
 /*COMMENTO
  * Punto i) FUNZIONAMENTO
- * Il nostro main istanzia una classe del tipo BW che estende thread e imposta una sua variabile di istanza a True.
+ * Il nostro Main istanzia una classe del tipo BW che estende thread e imposta una sua variabile di istanza a True.
  * Dopo averlo avviato mette in s0 il suo stato e in s1 lo stato del thread lanciato prima, quest'ultimo dipende dallo scheduling della CPU.
  * Esegue una stampa mostrando gli stati dei due thread, dopodiché prova ad assegnare alla varibile di istanza di t1
  * il risultato booleano di un confronto tra i due stati.
@@ -45,7 +45,7 @@ public class Esericzio3 {
  * PUNTO iii) TERMINAZIONE
  * L'applicazione non è detto che termini nella sua interezza, possono avvenire due casi, se gli stati sono uguali l'aggiornamento della
  * variabile viene posto a true, il thread t1 continuerà a ciclare all'infinito non facendo terminare nella sua interezza l'applicazione
- * mentre il thread main termina. Se invece gli stati sono diversi l'applicazione riesce a terminare dopo la stampa di t1 perché riesce ad uscire dal ciclo.
+ * mentre il thread Main termina. Se invece gli stati sono diversi l'applicazione riesce a terminare dopo la stampa di t1 perché riesce ad uscire dal ciclo.
  * N.B.
  * s1 non è deterministico, potrebbe trovarsi in uno dei seguenti stati: new quando ancora non è stato schedulato, Runnable quando è schedulato/in esecuzione e waiting quando aspetta nella sleep
  */

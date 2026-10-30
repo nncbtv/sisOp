@@ -24,6 +24,6 @@ public class Main {
 			System.out.println("Operatore "+i+" ritirato");
 		}
 		System.out.println("Tutti i clienti sono stati serviti");
-	}//main
+	}//Main
 
 }//Main

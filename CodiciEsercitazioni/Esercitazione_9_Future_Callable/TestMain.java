@@ -24,6 +24,6 @@ public class TestMain {
 		System.out.println(ris.isDone()); //Per controllare se il mio Callable è stato eseguito
 		System.out.println(risultato);
 		ex.shutdown();
-	}//main
+	}//Main
 
 }//TestMain

@@ -13,6 +13,7 @@ public class HotelLC extends Hotel {
 	
 	private final int N_CODE = 3;
 	private ReentrantLock l = new ReentrantLock();
+	@SuppressWarnings("unchecked")
 	private Queue<Thread> [] codePrioritarie = new Queue[N_CODE]; //Array di code, tutte linked list
 	private Condition attendiClienti = l.newCondition();
 	private Condition attendiReceptionist = l.newCondition();

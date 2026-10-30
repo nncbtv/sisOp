@@ -22,6 +22,6 @@ public class Main {
 			operaioRotaia[i].join();
 		}
 		System.out.println("Tutti i binari sono stati costruiti");
-	}//main
+	}//Main
 
 }//Main

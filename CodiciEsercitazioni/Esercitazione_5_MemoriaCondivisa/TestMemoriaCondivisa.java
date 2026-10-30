@@ -10,6 +10,6 @@ public class TestMemoriaCondivisa {
 		//MemoriaCondivisa m = new MemoriaCondivisaSem();
 		MemoriaCondivisa m = new MemoriaCondivisaLock();
 		m.test(N_LETTORI, N_SCRITTORI);
-	}//main
+	}//Main
 
 }//TestMemoriaCondivisa

@@ -7,5 +7,5 @@ public class TestSala {
 		//Sala tiziano = new SalaSem(4); //Implemetazione sincronismo semafori
 		Sala tiziano = new SalaLock(4); //Implementazione Lock
 		tiziano.test(30);
-	}//main
+	}//Main
 }//TestSala

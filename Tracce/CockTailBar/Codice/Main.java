@@ -6,6 +6,6 @@ public class Main {
 		int nClienti = 50;
 		Bar barDaMario = new BarSem(nClienti);
 		barDaMario.test();
-	}//main
+	}//Main
 
 }//Main

@@ -24,7 +24,7 @@ public class Main {
 			System.out.println("Errore nelle operazioni!!");
 		}
 
-	}//main
+	}//Main
 	//Qui parto con la funzione che sovlge tutti i test
 	private static void testCorrentisti(ContoCorrente cc, int nCorrentisti, int nOperazioni, int importo) throws InterruptedException {
 		//Creo un array di correntisti

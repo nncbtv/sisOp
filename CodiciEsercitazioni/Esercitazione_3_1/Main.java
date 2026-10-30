@@ -3,7 +3,7 @@
  * N thread devono decrementare di uno ogni elemento della riga passata per x volte.
  * M thread devono incrementare di uno ogni elemento della colonna passata per x volte.
  * Dobbiamo prima fare una soluzione non thread safe e poi una thread safe con gli atomic integer.
- * Il main deve stampare alla fine lo stato della matrice
+ * Il Main deve stampare alla fine lo stato della matrice
  *
  */
 package sisOp.CodiciEsercitazioni.Esercitazione_3_1;
@@ -43,7 +43,7 @@ public class Main {
 			System.out.println(Arrays.toString(matriceAtomica[i])); //Stampa ogni oggetto AtomicInteger con il suo toString
 		}
 
-	}//main
+	}//Main
 	private static void testWorkerNTS(int [][] matrice, int nRighe, int nColonne, int nOperazioni, int colonna) throws InterruptedException {
 		workerRigaNTS[] wr = new workerRigaNTS[nRighe]; //Creazione di un vettore di workerRiga, devono essere tanti quante le righe
 		for ( int i = 0; i<nRighe; i++) {

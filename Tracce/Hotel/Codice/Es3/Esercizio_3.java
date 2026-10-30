@@ -47,12 +47,12 @@ public class Esercizio_3 {
 				e.printStackTrace();
 			}
 		}
-	}//main
+	}//Main
 
 }//Esercizio_3
 
 /*SPIEGAZINE ESERCIZIO
- * Il nostro main avvia due Thread e poi dorme, questo lo esegue in loop, soltanto che va in deadlock perché Thread1 si ferma al secondo giro sul semaforo
+ * Il nostro Main avvia due Thread e poi dorme, questo lo esegue in loop, soltanto che va in deadlock perché Thread1 si ferma al secondo giro sul semaforo
  * aspettandosi n permessi che non gli vengono dati dal Thread0 poiché al secondo giro lui sul suo semfaro aveva un solo permesso dato da Thread 1.
  * Produce esattamente 000010 e poi va in deadlock.
  * L'applicazione non termina per il motivo spigeato precedentemente.

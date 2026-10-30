@@ -7,6 +7,6 @@ public class TestBuffer {
 		int nProduttori = 10;
 		int nConsumatori = 10;
 		b.test(nProduttori, nConsumatori);
-	}//main
+	}//Main
 
 }//TestBuffer

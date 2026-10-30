@@ -6,6 +6,6 @@ public class TestPrinter {
 		int n = 10; //Nummero di thread da sincronizzare
 		CodaThread c = new CodaThreadLock(n); //Sincronizzazione lock
 		c.avviaStampa();
-	}//main
+	}//Main
 
 }//TestPrinter

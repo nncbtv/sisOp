@@ -20,7 +20,7 @@ public class Es3 {
 			}
 			threads[i].start();
 		}
-	}//main
+	}//Main
 
 	static class MyThread extends Thread{
 		private final int id;
@@ -47,7 +47,7 @@ public class Es3 {
 }//Es3
 
 /*RISOLUZIONE
- * Il main crea un vettore di Thread e li avvia tutti dopo aver inizializzato l'array condition e impostato come false le celle dell'array boleano con indice dispari.
+ * Il Main crea un vettore di Thread e li avvia tutti dopo aver inizializzato l'array condition e impostato come false le celle dell'array boleano con indice dispari.
  * La classe MyThrad aspetta nella propria condition se la cella passata nel campo id è ha false finche non viene posta a true e svegliato per proseguire.
  * Subito dopo la wait sulla condition un thread dispari svegliato da uno pari stampa lo stato del Thread e pone a true la cella associata al Thread N-id-1 svegliandolo successivamente, i pari non entrano nella wait sulla condition.
  * L'output non è deterministico, infatti esso dipende da come i thread posseggono il lucchetto e a che tempo riescono ad eseguire l'istruzione di stampa, sostanzialemnte però ognuno stamperà il suo stato.

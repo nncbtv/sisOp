@@ -27,6 +27,6 @@ public class Main {
 		}
 		System.out.println("Tutti i clienti sono stati serviti, cinema chiuso");
 
-	}//main
+	}//Main
 
-}//main
+}//Main

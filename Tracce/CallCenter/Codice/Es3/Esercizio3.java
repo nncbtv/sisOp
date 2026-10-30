@@ -17,7 +17,7 @@ public class Esercizio3 {
 			threads[i] = new MyThread(i,n);
 			threads[i].start();
 		}
-	}//main
+	}//Main
 
 	static class MyThread extends Thread{
 		private int i, n;
@@ -40,7 +40,7 @@ public class Esercizio3 {
 		}//run
 	}//MyThread
 
-}//Esercizio3
+}//Main
 
 /*
  *COMMENTO ESERCIZIO
