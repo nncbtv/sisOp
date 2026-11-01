@@ -14,3 +14,6 @@ Si descriva, anche mediante schemi opportunamente commentati, il funzionamento d
 	-(File System allocazione)
 Descrivere brevemente, anche tramite un semplice esempio, il funzionamento della file allocation table (FAT).
 	-(File System allocazione)
+Si descriva sinteticamente cosa è la matrice di accesso, a cosa serve e quali sono le principali modalità usate
+per la sua implementazione.
+	-(Gestione Accessi Protezione Sistema Operativo)
