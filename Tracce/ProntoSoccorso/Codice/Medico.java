@@ -20,7 +20,7 @@ public class Medico extends Thread{
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Il medico è andato via");
+		System.out.println("[ MEDICO "+numeroCoda+" ] è andato via");
 	}//run
 	
 	public int getNumeroCoda() {

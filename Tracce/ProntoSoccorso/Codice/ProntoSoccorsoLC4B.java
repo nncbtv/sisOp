@@ -17,15 +17,15 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 	private static final int LIMITE_TURNI = 5; //Costante limite turni di attesa per un paziente di tipo giallo
 	private static final int CODA_VARIABILE = 1; //Per indicare quale coda deve gestire una variazione di priorità sul primo in coda
 	private static final int N_CODE = 3; //Code della nostra triage
-	private final int M_MEDICI = 2; //Per la variante devo tenere conto che possono esserci più medici, non sappiamo quanti
+	private final int M_MEDICI; //Per la variante devo tenere conto che possono esserci più medici, non sappiamo quanti
 	
 	//Gestione code
 	@SuppressWarnings("unchecked") //Va aggiunte perché l'ide la segna come errore altrimenti
 	private Queue<Thread> [] code = new Queue[N_CODE]; //Array di code
 	private Map<Thread, Integer> turniAttesi = new HashMap<>(); //Devo tenere conto di quanti turni ha aspettato un codice giallo
 	private Map<Thread, Boolean> pazienteInVisita = new HashMap<>(); //Per segnalare al thread che sta venendo visitato
-	private Thread [] pazienteEntrato = new Thread[M_MEDICI]; //Paziente entrato dal medico, in questa variante diventa un array
-	private boolean[] pazienteCritico = new boolean[M_MEDICI]; //Flag per capire se sto servendo un cliente critico o meno, in questa variante non serve
+	private Thread [] pazienteEntrato; //Paziente entrato dal medico, in questa variante diventa un array
+	private boolean[] pazienteCritico; //Flag per capire se sto servendo un cliente critico o meno, in questa variante non serve
 	//Non serve perché un cliente critico viene assegnato direttamente ad un medico
 	
 	//Gestione sezione critica
@@ -34,8 +34,11 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 	private Condition attendiPaziente = l.newCondition();
 	private Condition attendiEsito = l.newCondition();
 	
-	public ProntoSoccorsoLC4B( int clienti ) {
+	public ProntoSoccorsoLC4B( int clienti, int medici ) {
 		super(clienti);
+		this.M_MEDICI = medici;
+		pazienteCritico = new boolean[M_MEDICI];
+		pazienteEntrato = new Thread[M_MEDICI];
 		for ( int i = 0; i<code.length; i++ ) {
 			code[i] = new LinkedList<>(); //Inizializzo ogni coda
 		}
@@ -60,8 +63,11 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 			while ( pazienteEntrato[studioMedico] == null && isAperto() ) {
 				attendiPaziente.await(); //Devo attendere che arrivino i clienti
 			}
-			if ( !isAperto() ) return; //Abbiamo finito di servire i pazienti
-			System.out.println("[MEDICO "+studioMedico+" ]: Sta visitanto "+pazienteEntrato[studioMedico].getName()+ " paziente critico "+pazienteCritico[studioMedico]);
+			if ( !isAperto() ) {
+				attendiPaziente.signalAll();
+				return; //Non devo servire nessuno, il mio collega ha fatto l'ultima visita
+			}
+			System.out.println("[ MEDICO "+studioMedico+" ]: Sta visitanto "+pazienteEntrato[studioMedico].getName()+ " paziente critico "+pazienteCritico[studioMedico]);
 			//Mi serve il codice del tipo di visita del paziente
 			Paziente p = (Paziente) pazienteEntrato[studioMedico]; //Castizzo per usare i metodi di paziente
 			int tipoVisita = p.getCodice(); //Prendo il tipo della visita
@@ -87,11 +93,15 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 		l.lock();
 		try {
 			//Ho finito la visita quindi devo ricominciare ad armare tutti i flag
+			if ( !isAperto() ) {
+				attendiPaziente.signalAll();
+				return; //Non devo servire nessuno, il mio collega ha fatto l'ultima visita
+			}
 			Medico m = (Medico) Thread.currentThread(); //castizzo per usare i suoi metodi
 			int studioMedico = m.getNumeroCoda(); //Prendo il numero dello studio medico assegnato al medico
 			Paziente p = (Paziente) pazienteEntrato[studioMedico]; //Castizzo per usare i metodi di paziente
 			pazienteInVisita.put(p, false); //Lo avviso che la visita è finita e può andare via
-			System.out.println("[MEDICO "+studioMedico+" ]: Ha visitato "+pazienteEntrato[studioMedico].getName()+ " paziente numero "+contaPazientiVisitati);
+			System.out.println("[ MEDICO "+studioMedico+" ]: Ha visitato "+pazienteEntrato[studioMedico].getName()+ " paziente numero "+contaPazientiVisitati);
 			contaPazientiVisitati++;
 			pazienteCritico[studioMedico] = false; //Il flag lo disarmo perché sicuramente il paziente critico è stato assegnato ad un medico libero, dal thread appena uscito
 			pazienteEntrato[studioMedico] = null; //Per prendere poi il prossimo
@@ -118,6 +128,10 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 			}
 			//Devo andare dal medico libero
 			for ( int i = 0; i < M_MEDICI; i++ ) {
+				if ( pazienteEntrato[i] == corrente ) {
+					//Significa che mi hanno svegliato come paziente critico, ho già assegnato il medico
+					break;
+				}
 				if ( pazienteEntrato[i] == null ) {
 					pazienteEntrato[i] = corrente;
 					break; //Mi fermo al primo libero, inutile andare avanti
@@ -146,7 +160,7 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 
 	private boolean mediciOccupati(Thread x) {
 		for ( int i = 0; i < M_MEDICI; i++ ) {
-			if ( pazienteEntrato[i] == null || pazienteEntrato[i] == x) return false; //c'è un medico libero oppure deve servire me, in caso sono il paziente critico
+			if ( pazienteEntrato[i] == null || pazienteEntrato[i] == x ) return false; //c'è un medico libero oppure deve servire me, in caso sono il paziente critico
 		}
 		return true; //sono tutti occupati
 	}//mediciOccupati
@@ -177,8 +191,6 @@ public class ProntoSoccorsoLC4B extends ProntoSoccorso {
 				for ( int i = 0; i < M_MEDICI; i++ ) {
 					if ( pazienteEntrato[i] == null ) {
 						pazienteEntrato[i] = primoCodaVariabile; //Faccio passare lui se è arrivato al limite
-						code[CODA_VARIABILE].remove(primoCodaVariabile); //Lo rimuovo dalla coda
-						pazienteInVisita.put(primoCodaVariabile, true); //Imposto che è in visita
 						pazienteCritico[i] = true;
 						break; //Mi fermo al primo libero, inutile andare avanti
 					}
