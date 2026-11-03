@@ -1,0 +1,1 @@
+Mi sono accorto che invertendo le chiamate ai metodi di impiegato il problema diventa un produttore/consumatore pure molto più semplice, l'implementazione con il codice invertito si trova nella cartella CodiceVariato

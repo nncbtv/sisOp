@@ -5,7 +5,8 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		final int CLIENTI = 200;
 		final int IMPIEGATI = 3;
-		UfficioPostale u = new UfficioPostaleLC(CLIENTI, IMPIEGATI);
+		final int CODE_OPERAZIONI = 2;
+		UfficioPostale u = new UfficioPostaleLC4B(CLIENTI, IMPIEGATI, CODE_OPERAZIONI);
 		Thread [] c = new Thread[CLIENTI];
 		Thread [] imp = new Thread[IMPIEGATI];
 		for ( int i = 0; i<60; i++ ) {
