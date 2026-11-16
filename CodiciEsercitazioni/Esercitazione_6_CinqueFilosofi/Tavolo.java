@@ -5,7 +5,7 @@ import sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi.Filosofo;
 public abstract class Tavolo extends sisOp.CodiciEsercitazioni.Esercitazione_5_CinqueFilosofi.Tavolo { //Estendo lo scorso tavolo
 
 	private final static int FILOSOFI = 5;
-	protected boolean[] bacchette = new boolean[FILOSOFI]; //riga in più al tavolo precedente, libera false, occupata true
+	protected boolean[] bacchettaOccupata = new boolean[FILOSOFI]; //riga in più al tavolo precedente, libera false, occupata true
 
 	@Override
 	public abstract void prendiBacchette(int i) throws InterruptedException;

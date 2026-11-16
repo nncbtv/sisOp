@@ -15,7 +15,7 @@ public class ContoCorrenteLock extends sisOp.CodiciEsercitazioni.contoCorrente.C
 	public void preleva(int importo) {
 		l.lock(); //Prendo il lucchetto per avere la mutua esclusione
 		try {//Entro in sezione critica
-			Saldo = Saldo-importo;
+			super.Saldo = super.Saldo-importo;
 		}finally {
 			l.unlock(); //Rilascio il lucchetto
 		}
@@ -25,7 +25,7 @@ public class ContoCorrenteLock extends sisOp.CodiciEsercitazioni.contoCorrente.C
 	public void deposita(int importo) {
 		l.lock(); //Prendo il lucchetto per avere la mutua esclusione
 		try {//Entro in sezione critica
-			Saldo = Saldo+importo;
+			super.Saldo = super.Saldo+importo;
 		}finally {
 			l.unlock(); //Rilascio il lucchetto
 		}

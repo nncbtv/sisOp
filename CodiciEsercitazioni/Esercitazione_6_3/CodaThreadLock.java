@@ -26,7 +26,7 @@ public class CodaThreadLock extends CodaThread {
 			turno++; //Informo la sezione critica che mi ha servito e può passare al prossimo
 			aspetta.signalAll(); //Sveglio tutti gli altri thread
 			//Li sveglio tutti perchè tanto se non è il loro turno si riaddormentano sulla condition
-			//Svegliarne uno solo mi porterebbe a starvation
+			//Svegliarne uno solo mi porterebbe a deadlock dato che potrei non svegliare il primo e quindi tutti in attesa
 		} finally {
 			l.unlock();//rilascio il lock
 		}

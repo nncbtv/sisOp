@@ -25,9 +25,9 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 				bufferPieno.await(); //Condition ereditata su cui dormo
 			}
 			codaProduttori.remove(); //Esco dalla coda
-			buffer[in] = i; //In è l'indice che eredito dalla classe astratta di cui sono figlio
+			buffer[super.in] = i; //In è l'indice che eredito dalla classe astratta di cui sono figlio
 			System.out.println("Sto scrivendo: "+i);
-			in = (in+1)%buffer.length; //Modulo per non andare fuori indice
+			super.in = (super.in+1)%buffer.length; //Modulo per non andare fuori indice
 			nElementi++; //Segnalo di aver aggiunto un elemento al contatore
 			bufferVuoto.signalAll(); //Sveglio tutti i threads
 		} finally {
@@ -37,7 +37,7 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 
 	private boolean possoInserire() {
 		//Controllo se posso mettere ancora elementi senza sforare e se sono il primo thread in coda
-		return nElementi<buffer.length && Thread.currentThread().equals(codaProduttori.getFirst());
+		return (nElementi < buffer.length) && ( Thread.currentThread().equals( codaProduttori.getFirst() ) );
 	}//possoInserire
 
 	@Override
@@ -50,9 +50,9 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 				bufferVuoto.await(); //Condition ereditata su cui dormo
 			}
 			codaConsumatori.remove(); //Esco dalla coda
-			i = buffer[out]; //In è l'indice che eredito dalla classe astratta di cui sono figlio
+			i = buffer[super.out]; //In è l'indice che eredito dalla classe astratta di cui sono figlio
 			System.out.println("Sto leggendo: "+i);
-			out = (out+1)%buffer.length; //Modulo per non andare fuori indice
+			super.out = (super.out+1)%buffer.length; //Modulo per non andare fuori indice
 			nElementi--; //Segnalo di aver aggiunto un elemento al contatore
 			bufferPieno.signalAll(); //Sveglio tutti i threads
 		} finally {
@@ -63,7 +63,7 @@ public class BufferLockFIFO extends BufferLock{ //Eredito dalla classe non FIFO
 
 	private boolean possoTogliere() {
 		//Controllo se posso mettere ancora elementi senza sforare e se sono il primo thread in coda
-		return nElementi>0 && Thread.currentThread().equals(codaConsumatori.getFirst());
+		return ( nElementi > 0) && ( Thread.currentThread().equals( codaConsumatori.getFirst() ) );
 	}//possoInserire
 
 }//BufferLockFIFO

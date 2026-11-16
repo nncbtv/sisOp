@@ -28,9 +28,9 @@ public class BufferLock extends Buffer {
 			while ( nElementi == buffer.length) {//Controllo se è verigficata la condition
 				bufferPieno.await(); //Se il buffer è pieno mi addormento sulla condition
 			}
-			buffer[in] = i; //In è l'indice che eredito dalla classe astratta di cui sono figlio
+			buffer[super.in] = i; //In è l'indice che eredito dalla classe astratta di cui sono figlio
 			System.out.println("Sto scrivendo: "+i);
-			in = (in+1)%buffer.length; //Modulo per non andare fuori indice
+			super.in = (super.in+1)%buffer.length; //Modulo per non andare fuori indice
 			nElementi++; //Segnalo di aver aggiunto un elemento al contatore
 			bufferVuoto.signal(); //Sveglio un thread che vuole leggere
 		} finally {
@@ -48,9 +48,9 @@ public class BufferLock extends Buffer {
 				//Se non ci sono elementi nel buffer mi addormento sulla condition
 				bufferVuoto.await();
 			}
-			i = buffer[out];
+			i = buffer[super.out];
 			System.out.println("Sto leggendo: "+i);
-			out = (out+1)%buffer.length;
+			super.out = (super.out+1)%buffer.length;
 			nElementi--; //Perché ne ho letto uno
 			bufferPieno.signal(); //Risveglio un thread che deve scrivere
 		} finally {
