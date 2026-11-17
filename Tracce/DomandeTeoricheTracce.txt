@@ -17,3 +17,12 @@ Descrivere brevemente, anche tramite un semplice esempio, il funzionamento della
 Si descriva sinteticamente cosa è la matrice di accesso, a cosa serve e quali sono le principali modalità usate
 per la sua implementazione.
 	-(Gestione Accessi Protezione Sistema Operativo)
+Si descriva, anche attraverso un semplice esempio, il fenomeno dell'Anomalia di Belady nei sistemi
+operativi, illustrando in che modo può manifestarsi durante la gestione della memoría virtuale con
+paginazione.
+	-(Memoria Virtuale)
+Descrivere brevemente, anche tramite un semplice esempio, l'algoritmo di scheduling del disco Shortest
+Seek Time First (SSTF), indicando anche se può causare starvation.
+	-(Gestione scheduling disco)
+Si descriva brevemente lo scopo e il funzionamento delle funzioni UNIX fork(), exec() e wait(), mostrando anche un semplice esempio d'uso.
+	-(Gestione Processi UNIX)
