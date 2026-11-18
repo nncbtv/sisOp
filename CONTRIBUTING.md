@@ -17,7 +17,7 @@ Successivamente puoi clonare il tuo fork sul computer:
 ```bash
 git clone https://github.com/TUO-USERNAME/sisOp.git
 
-cd algoritmieStruttureDati
+cd sisOp
 ```
 
 ### 2. Crea un nuovo branch
